@@ -43,11 +43,16 @@ public final class ChronoModClient implements ClientModInitializer {
             try { selected = Integer.parseInt(values[0]); }
             catch (NumberFormatException ex) { return; }
 
+            // Smaller overall footprint; anchor using the scaled coordinate space.
+            final float uiScale = 0.82f;
+            draw.getMatrices().push();
+            draw.getMatrices().scale(uiScale, uiScale, 1.0f);
+
             int cellW = 53, cellH = 43, gap = 3;
             int panelW = cellW * 3 + gap * 2 + 12;
             int panelH = cellH * 2 + gap + 25;
             int x = 8;
-            int y = client.getWindow().getScaledHeight() - panelH - 8;
+            int y = Math.round(client.getWindow().getScaledHeight() / uiScale) - panelH - 8;
 
             // Dark glass-like panel with a restrained brass/purple frame.
             draw.fill(x - 3, y - 3, x + panelW + 3, y + panelH + 3, 0x88000000);
@@ -89,8 +94,9 @@ public final class ChronoModClient implements ClientModInitializer {
                     }
                 }
 
-                String label = Ability.values()[i].displayName().getString();
-                if (label.length() > 8) label = label.substring(0, 8);
+                // Compact Korean labels prevent text from spilling into adjacent tiles.
+                String[] labels = {"정지", "되돌림", "감속", "가속", "도약", "성장"};
+                String label = client.textRenderer.trimToWidth(labels[i], cellW - 29);
                 draw.drawTextWithShadow(client.textRenderer, Text.literal(label),
                         cx + 25, cy + 7, active ? 0xFFFFF0D2 : 0xFFD5D9E7);
 
@@ -111,6 +117,7 @@ public final class ChronoModClient implements ClientModInitializer {
                 draw.drawTextWithShadow(client.textRenderer, Text.literal(Integer.toString(i + 1)),
                         cx + cellW - 8, cy + 2, active ? 0xFFFFE6A8 : 0xFF8D98B4);
             }
+            draw.getMatrices().pop();
         });
     }
 }
