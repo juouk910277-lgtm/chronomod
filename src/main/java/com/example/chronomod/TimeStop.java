@@ -167,23 +167,21 @@ public final class TimeStop {
         Fx.sound(world, c, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, 2.0f, 0.7f);
         Fx.sound(world, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 0.5f);
 
-        world.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
-        world.spawnParticles(ParticleTypes.SONIC_BOOM, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(world, eye, 1.0);
         Fx.sphere(world, ParticleTypes.END_ROD, eye, 160, 0.9);
         Fx.sphere(world, ParticleTypes.ELECTRIC_SPARK, eye, 100, 1.4);
         Fx.shockwave(world, ParticleTypes.END_ROD, ground, 24, 12, 1, 90);
         Fx.shockwave(world, ParticleTypes.SOUL_FIRE_FLAME, ground, 14, 8, 2, 60);
 
         Scheduler.later(6, () -> {
-            world.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+            ModelFx.impact(world, eye, 0.8);
             Fx.sphere(world, ParticleTypes.REVERSE_PORTAL, eye, 120, 0.7);
         });
 
         int n = 0;
         for (Entity e : targets) {
             if (n++ >= 40) break;
-            world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, e.getX(), e.getY() + e.getHeight() / 2, e.getZ(),
-                    12, 0.3, 0.5, 0.3, 0.15);
+            ModelFx.impact(world, e.getPos().add(0, e.getHeight() / 2, 0), 0.45);
         }
     }
 
@@ -239,15 +237,14 @@ public final class TimeStop {
             Fx.clockEmblem(world, c.add(0, 0.05, 0), 3.5, TimeManager.now);
             SummonedFx.clockFace(world, c, caster.getYaw(), 3.6, TimeManager.now);
         }
-        world.spawnParticles(ParticleTypes.END_ROD, c.x, c.y + 1.0, c.z, 3, 1.5, 1.0, 1.5, 0.02);
+        // The floating clock and surrounding displays provide the active-time visual.
 
         if (TimeManager.now % 3 == 0) {
             int n = 0;
             for (UUID id : a.frozen.keySet()) {
                 Entity e = world.getEntity(id);
                 if (e == null) continue;
-                world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, e.getX(), e.getY() + e.getHeight() / 2, e.getZ(),
-                        1, e.getWidth() / 2, e.getHeight() / 2, e.getWidth() / 2, 0.0);
+                ModelFx.marker(world, e.getPos().add(0, e.getHeight() / 2, 0), 4);
                 if (++n >= 40) break;
             }
         }
@@ -280,17 +277,13 @@ public final class TimeStop {
             if (f.pending > 0 && e instanceof LivingEntity le && le.isAlive()) {
                 DamageSource src = f.source != null ? f.source : world.getDamageSources().generic();
                 le.damage(world, src, f.pending);
-                world.spawnParticles(ParticleTypes.CRIT, e.getX(), e.getY() + e.getHeight() / 2, e.getZ(),
-                        40, 0.4, 0.5, 0.4, 0.6);
-                world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, e.getX(), e.getY() + e.getHeight() / 2, e.getZ(),
-                        30, 0.4, 0.5, 0.4, 0.5);
+                ModelFx.impact(world, e.getPos().add(0, e.getHeight() / 2, 0), 1.0);
             }
         }
 
         Fx.sound(world, center, SoundEvents.BLOCK_BEACON_DEACTIVATE, 2.0f, 0.6f);
         Fx.sound(world, center, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, 1.5f, 1.2f);
-        world.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
-        world.spawnParticles(ParticleTypes.SONIC_BOOM, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(world, eye, 1.0);
         Fx.sphere(world, ParticleTypes.REVERSE_PORTAL, eye, 140, 0.8);
         Fx.shockwave(world, ParticleTypes.ELECTRIC_SPARK, center.add(0, 0.1, 0), 22, 10, 1, 80);
     }
@@ -310,10 +303,7 @@ public final class TimeStop {
                 f.pending += amount;
                 f.source = source;
                 if (entity.getWorld() instanceof ServerWorld sw) {
-                    sw.spawnParticles(ParticleTypes.CRIT, entity.getX(), entity.getY() + entity.getHeight() / 2,
-                            entity.getZ(), 8, 0.3, 0.4, 0.3, 0.2);
-                    sw.spawnParticles(ParticleTypes.ELECTRIC_SPARK, entity.getX(), entity.getY() + entity.getHeight() / 2,
-                            entity.getZ(), 6, 0.3, 0.4, 0.3, 0.1);
+                    ModelFx.impact(sw, entity.getPos().add(0, entity.getHeight() / 2, 0), 0.4);
                 }
                 return false;
             }
