@@ -5,6 +5,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
+import net.minecraft.entity.decoration.DisplayEntity.ItemDisplayEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.item.ItemStack;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
@@ -54,13 +58,15 @@ public final class TimeStop {
         final RegistryKey<World> dim;
         final Vec3d center;
         final long endAt;
+        final ItemDisplayEntity clock;
         final Map<UUID, Frozen> frozen = new HashMap<>();
 
-        Active(UUID caster, RegistryKey<World> dim, Vec3d center, long endAt) {
+        Active(UUID caster, RegistryKey<World> dim, Vec3d center, long endAt, ItemDisplayEntity clock) {
             this.caster = caster;
             this.dim = dim;
             this.center = center;
             this.endAt = endAt;
+            this.clock = clock;
         }
     }
 
@@ -75,7 +81,8 @@ public final class TimeStop {
         for (Active a : ACTIVE) if (a.caster.equals(caster.getUuid())) return false;
 
         ServerWorld world = (ServerWorld) caster.getWorld();
-        Active active = new Active(caster.getUuid(), world.getRegistryKey(), caster.getPos(), TimeManager.now + DURATION);
+        ItemDisplayEntity clock = spawnClock(world, caster);
+        Active active = new Active(caster.getUuid(), world.getRegistryKey(), caster.getPos(), TimeManager.now + DURATION, clock);
 
         Box box = caster.getBoundingBox().expand(RADIUS);
         List<Entity> targets = world.getOtherEntities(caster, box, e ->
@@ -98,6 +105,20 @@ public final class TimeStop {
         playStartEffects(world, caster, targets);
         SummonedFx.timeStop(world, caster.getPos());
         return true;
+    }
+
+    /** Spawns the layered 3D clock as an Item Display, not a block or Block Display. */
+    private static ItemDisplayEntity spawnClock(ServerWorld world, ServerPlayerEntity caster) {
+        ItemDisplayEntity display = EntityType.ITEM_DISPLAY.create(world, SpawnReason.TRIGGERED);
+        if (display == null) return null;
+        display.getStackReference(0).set(new ItemStack(ModItems.TIME_STOP_CLOCK));
+        display.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
+        display.setYaw(caster.getYaw());
+        display.setNoGravity(true);
+        display.setSilent(true);
+        display.setInvulnerable(true);
+        world.spawnEntity(display);
+        return display;
     }
 
     private static void playStartEffects(ServerWorld world, ServerPlayerEntity caster, List<Entity> targets) {
@@ -147,6 +168,10 @@ public final class TimeStop {
                 continue;
             }
             hold(world, a);
+            if (a.clock != null && !a.clock.isRemoved()) {
+                a.clock.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
+                a.clock.setYaw(caster.getYaw());
+            }
             visuals(world, a, caster, left);
         }
     }
@@ -203,6 +228,7 @@ public final class TimeStop {
 
     /** 정지 해제: 풀어 주고, 쌓인 피해를 한꺼번에 터뜨린다 */
     private static void end(ServerWorld world, Active a, ServerPlayerEntity caster) {
+        if (a.clock != null && !a.clock.isRemoved()) a.clock.discard();
         Vec3d center = caster != null ? caster.getPos() : a.center;
         Vec3d eye = center.add(0, 1.0, 0);
 
