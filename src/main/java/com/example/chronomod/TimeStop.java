@@ -299,10 +299,12 @@ public final class TimeStop {
         for (Active a : ACTIVE) {
             Frozen f = a.frozen.get(entity.getUuid());
             if (f != null) {
-                // 시간의 검 타격은 정지 중에도 즉시 처리해 검의 추가 효과와 연계한다.
+                // 시간의 검 기본 타격은 통과시키지 않고, 검이 별도로 가하는 추가 피해만 통과시킨다.
+                if (TimeSwordItem.isApplyingBonusDamage()) return true;
                 if (source.getAttacker() instanceof ServerPlayerEntity player
-                        && player.getMainHandStack().isOf(ModItems.TIME_SWORD)) {
-                    return true;
+                        && (player.getMainHandStack().isOf(ModItems.TIME_SWORD)
+                        || player.getOffHandStack().isOf(ModItems.TIME_SWORD))) {
+                    return false;
                 }
                 f.pending += amount;
                 f.source = source;
