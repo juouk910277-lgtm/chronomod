@@ -1,0 +1,97 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "face": "minecraft:block/obsidian",
+    "steel": "minecraft:block/iron_block",
+    "glass": "minecraft:block/blue_stained_glass",
+    "gold": "minecraft:block/gold_block",
+    "glow": "minecraft:block/sea_lantern"
+  },
+  "elements": [
+    {
+      "name": "minute hand stem",
+      "from": [
+        7.9,
+        2.9,
+        9
+      ],
+      "to": [
+        8.1,
+        8.15,
+        9.45
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glow"
+        },
+        "south": {
+          "texture": "#glow"
+        },
+        "east": {
+          "texture": "#glow"
+        },
+        "west": {
+          "texture": "#glow"
+        },
+        "up": {
+          "texture": "#glow"
+        },
+        "down": {
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "minute hand tip",
+      "from": [
+        7.65,
+        2.6,
+        9
+      ],
+      "to": [
+        8.35,
+        3.35,
+        9.45
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glow"
+        },
+        "south": {
+          "texture": "#glow"
+        },
+        "east": {
+          "texture": "#glow"
+        },
+        "west": {
+          "texture": "#glow"
+        },
+        "up": {
+          "texture": "#glow"
+        },
+        "down": {
+          "texture": "#glow"
+        }
+      }
+    }
+  ],
+  "display": {
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        6.5,
+        6.5,
+        6.5
+      ]
+    }
+  }
+}
