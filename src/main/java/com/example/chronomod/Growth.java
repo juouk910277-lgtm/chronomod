@@ -36,6 +36,7 @@ public final class Growth {
 
         SummonedFx.growth(w, cv);
         AbilityClockFx.inFront(w, p, 48);
+        AbilityClockFx.greenAura(w, p, 120);
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
 
         for (int wave = 0; wave < WAVES; wave++) {
