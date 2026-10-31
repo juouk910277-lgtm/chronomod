@@ -81,7 +81,9 @@ public final class TimeStop {
         for (Active a : ACTIVE) if (a.caster.equals(caster.getUuid())) return false;
 
         ServerWorld world = (ServerWorld) caster.getWorld();
-        List<ItemDisplayEntity> clockParts = spawnClock(world, caster);
+        List<ItemDisplayEntity> clockParts = new ArrayList<>();
+        AbilityClockFx.behind(world, caster, DURATION, false, true);
+        AbilityClockFx.dome(world, caster, DURATION, RADIUS);
         Active active = new Active(caster.getUuid(), world.getRegistryKey(), caster.getPos(), TimeManager.now + DURATION, clockParts);
 
         Box box = caster.getBoundingBox().expand(RADIUS);
