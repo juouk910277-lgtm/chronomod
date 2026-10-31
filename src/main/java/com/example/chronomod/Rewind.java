@@ -108,7 +108,7 @@ public final class Rewind {
         Vec3d eye = p.getPos().add(0, 1.0, 0);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 2.0f, 0.6f);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_BELL_RESONATE, 2.0f, 1.8f);
-        w.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(w, eye, 0.9);
         Fx.sphere(w, ParticleTypes.REVERSE_PORTAL, eye, 100, 0.5);
         Fx.shockwave(w, ParticleTypes.REVERSE_PORTAL, p.getPos().add(0, 0.1, 0), 8, 6, 1, 50);
         return true;
@@ -156,7 +156,6 @@ public final class Rewind {
     }
 
     private static void visit(ServerWorld w, Snap s, int index) {
-        w.spawnParticles(ParticleTypes.REVERSE_PORTAL, s.pos().x, s.pos().y + 1.0, s.pos().z, 8, 0.3, 0.6, 0.3, 0.1);
         if (index % 2 == 0) Fx.ghost(w, s.pos());
     }
 
@@ -179,14 +178,12 @@ public final class Rewind {
                 le.setVelocity(Vec3d.ZERO);
                 le.fallDistance = 0;
                 le.setHealth(Math.min(ms.health(), le.getMaxHealth()));
-                w.spawnParticles(ParticleTypes.REVERSE_PORTAL, ms.pos().x, ms.pos().y + 1.0, ms.pos().z,
-                        20, 0.3, 0.6, 0.3, 0.2);
+                ModelFx.impact(w, ms.pos().add(0, 1, 0), 0.7);
             }
         }
 
         Vec3d eye = p.getPos().add(0, 1.0, 0);
-        w.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
-        w.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, eye.x, eye.y, eye.z, 60, 0.5, 0.8, 0.5, 0.5);
+        ModelFx.impact(w, eye, 1.0);
         Fx.sphere(w, ParticleTypes.END_ROD, eye, 80, 0.6);
         Fx.shockwave(w, ParticleTypes.END_ROD, p.getPos().add(0, 0.1, 0), 10, 6, 1, 60);
         Fx.sound(w, p.getPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 0.8f);
