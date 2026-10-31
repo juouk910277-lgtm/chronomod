@@ -163,7 +163,11 @@ public final class Rewind {
         for (MobSnap ms : s.mobs()) {
             Entity e = w.getEntity(ms.id());
             if (e instanceof LivingEntity le && le.isAlive()) {
-                le.refreshPositionAndAngles(ms.pos().x, ms.pos().y, ms.pos().z, ms.yaw(), le.getPitch());
+                if (le instanceof ServerPlayerEntity other) {
+                    other.networkHandler.requestTeleport(ms.pos().x, ms.pos().y, ms.pos().z, ms.yaw(), le.getPitch());
+                } else {
+                    le.refreshPositionAndAngles(ms.pos().x, ms.pos().y, ms.pos().z, ms.yaw(), le.getPitch());
+                }
                 le.setVelocity(Vec3d.ZERO);
                 le.fallDistance = 0;
             }
