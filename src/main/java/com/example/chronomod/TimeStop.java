@@ -58,15 +58,15 @@ public final class TimeStop {
         final RegistryKey<World> dim;
         final Vec3d center;
         final long endAt;
-        final ItemDisplayEntity clock;
+        final List<ItemDisplayEntity> clockParts;
         final Map<UUID, Frozen> frozen = new HashMap<>();
 
-        Active(UUID caster, RegistryKey<World> dim, Vec3d center, long endAt, ItemDisplayEntity clock) {
+        Active(UUID caster, RegistryKey<World> dim, Vec3d center, long endAt, List<ItemDisplayEntity> clockParts) {
             this.caster = caster;
             this.dim = dim;
             this.center = center;
             this.endAt = endAt;
-            this.clock = clock;
+            this.clockParts = clockParts;
         }
     }
 
@@ -81,8 +81,8 @@ public final class TimeStop {
         for (Active a : ACTIVE) if (a.caster.equals(caster.getUuid())) return false;
 
         ServerWorld world = (ServerWorld) caster.getWorld();
-        ItemDisplayEntity clock = spawnClock(world, caster);
-        Active active = new Active(caster.getUuid(), world.getRegistryKey(), caster.getPos(), TimeManager.now + DURATION, clock);
+        List<ItemDisplayEntity> clockParts = spawnClock(world, caster);
+        Active active = new Active(caster.getUuid(), world.getRegistryKey(), caster.getPos(), TimeManager.now + DURATION, clockParts);
 
         Box box = caster.getBoundingBox().expand(RADIUS);
         List<Entity> targets = world.getOtherEntities(caster, box, e ->
@@ -107,18 +107,45 @@ public final class TimeStop {
         return true;
     }
 
-    /** Spawns the layered 3D clock as an Item Display, not a block or Block Display. */
-    private static ItemDisplayEntity spawnClock(ServerWorld world, ServerPlayerEntity caster) {
+    /** Builds a floating 3D clock from separate item displays so its hands and gears can rotate independently. */
+    private static List<ItemDisplayEntity> spawnClock(ServerWorld world, ServerPlayerEntity caster) {
+        List<ItemDisplayEntity> parts = new ArrayList<>();
+        addClockPart(world, caster, ModItems.TIME_STOP_CLOCK, parts);
+        addClockPart(world, caster, ModItems.TIME_STOP_HOUR_HAND, parts);
+        addClockPart(world, caster, ModItems.TIME_STOP_MINUTE_HAND, parts);
+        addClockPart(world, caster, ModItems.TIME_STOP_GEAR_A, parts);
+        addClockPart(world, caster, ModItems.TIME_STOP_GEAR_B, parts);
+        return parts;
+    }
+
+    private static void addClockPart(ServerWorld world, ServerPlayerEntity caster, net.minecraft.item.Item item,
+                                     List<ItemDisplayEntity> parts) {
         ItemDisplayEntity display = EntityType.ITEM_DISPLAY.create(world, SpawnReason.TRIGGERED);
-        if (display == null) return null;
-        display.getStackReference(0).set(new ItemStack(ModItems.TIME_STOP_CLOCK));
+        if (display == null) return;
+        display.getStackReference(0).set(new ItemStack(item));
         display.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
+        display.setPitch(90.0f);
         display.setYaw(caster.getYaw());
         display.setNoGravity(true);
         display.setSilent(true);
         display.setInvulnerable(true);
+        display.setCommandTag("chronomod_time_stop_clock");
         world.spawnEntity(display);
-        return display;
+        parts.add(display);
+    }
+
+    private static void updateClock(Active active, ServerPlayerEntity caster) {
+        float baseYaw = caster.getYaw();
+        float t = TimeManager.now;
+        float[] offsets = {0.0f, (float) (Math.sin(t * 0.018) * 5.0),
+                (float) (t * 2.4), (float) (-t * 3.2), (float) (t * 2.1)};
+        for (int i = 0; i < active.clockParts.size(); i++) {
+            ItemDisplayEntity part = active.clockParts.get(i);
+            if (part.isRemoved()) continue;
+            part.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
+            part.setPitch(90.0f);
+            part.setYaw(baseYaw + offsets[Math.min(i, offsets.length - 1)]);
+        }
     }
 
     private static void playStartEffects(ServerWorld world, ServerPlayerEntity caster, List<Entity> targets) {
@@ -168,10 +195,7 @@ public final class TimeStop {
                 continue;
             }
             hold(world, a);
-            if (a.clock != null && !a.clock.isRemoved()) {
-                a.clock.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
-                a.clock.setYaw(caster.getYaw());
-            }
+            updateClock(a, caster);
             visuals(world, a, caster, left);
         }
     }
@@ -228,7 +252,9 @@ public final class TimeStop {
 
     /** 정지 해제: 풀어 주고, 쌓인 피해를 한꺼번에 터뜨린다 */
     private static void end(ServerWorld world, Active a, ServerPlayerEntity caster) {
-        if (a.clock != null && !a.clock.isRemoved()) a.clock.discard();
+        for (ItemDisplayEntity part : a.clockParts) {
+            if (!part.isRemoved()) part.discard();
+        }
         Vec3d center = caster != null ? caster.getPos() : a.center;
         Vec3d eye = center.add(0, 1.0, 0);
 
