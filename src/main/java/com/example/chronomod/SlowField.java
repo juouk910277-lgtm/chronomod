@@ -35,7 +35,7 @@ public final class SlowField {
         ServerWorld w = (ServerWorld) p.getWorld();
         Vec3d c = p.getPos();
         FIELDS.add(new Field(p.getUuid(), w.getRegistryKey(), c, TimeManager.now + DURATION));
-        SummonedFx.slowField(w, c, RADIUS);
+        AbilityClockFx.ground(w, c, RADIUS, DURATION);
 
         Fx.sound(w, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 1.4f);
         Fx.sound(w, c, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.5f, 0.5f);
@@ -55,7 +55,7 @@ public final class SlowField {
             if (TimeManager.now >= f.endAt()) {
                 it.remove();
                 Fx.sound(w, f.center(), SoundEvents.BLOCK_BEACON_DEACTIVATE, 2.0f, 1.2f);
-                ModelFx.ring(w, f.center().add(0, 0.15, 0), RADIUS, 4, 8);
+                // The animated dial settles at twelve and removes itself at the end of its lifetime.
                 continue;
             }
             applyField(w, f);
