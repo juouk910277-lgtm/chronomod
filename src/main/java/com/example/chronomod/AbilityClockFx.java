@@ -190,10 +190,34 @@ public final class AbilityClockFx {
         frame[0].run();
     }
 
+
+    /** Green rotating crystal aura around the caster while the growth benefit is active. */
+    public static void greenAura(ServerWorld world, ServerPlayerEntity caster, int duration) {
+        List<ItemDisplayEntity> parts = new ArrayList<>();
+        for (int i = 0; i < 3; i++) parts.add(part(world, ModItems.TIME_GREEN_CRYSTAL, caster.getPos(), 0));
+        final int[] age = {0};
+        Runnable[] frame = new Runnable[1];
+        frame[0] = () -> {
+            if (age[0] >= duration || !caster.isAlive() || caster.getWorld() != world) {
+                discard(parts);
+                return;
+            }
+            Vec3d base = caster.getPos().add(0, 0.9, 0);
+            for (int i = 0; i < parts.size(); i++) {
+                double a = age[0] * 0.16 + i * Math.PI * 2.0 / 3.0;
+                Vec3d pos = base.add(Math.cos(a) * 0.62, Math.sin(a * 1.4) * 0.38, Math.sin(a) * 0.62);
+                move(parts.get(i), pos, (float) Math.toDegrees(a));
+            }
+            age[0]++;
+            Scheduler.later(1, frame[0]);
+        };
+        frame[0].run();
+    }
+
     /** A brief red-themed impact cue using the darker gear silhouette above a damaged target. */
     public static void redImpact(ServerWorld world, Vec3d target, int duration, boolean empowered) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_STOP_GEAR_B, target.add(0, 0.25, 0), 0));
+        p.add(part(world, ModItems.TIME_RED_GEAR, target.add(0, 0.25, 0), 0));
         p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, target.add(0, 0.29, 0), 0));
         p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, target.add(0, 0.32, 0), 0));
         final int[] age = {0};
