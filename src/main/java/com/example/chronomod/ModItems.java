@@ -34,6 +34,11 @@ public final class ModItems {
     public static final Item TIME_STOP_GEAR_B = register(
             "time_stop_gear_b", Item::new, new Item.Settings().maxCount(1));
 
+    public static final Item TIME_RED_GEAR = register(
+            "time_red_gear", Item::new, new Item.Settings().maxCount(1));
+    public static final Item TIME_GREEN_CRYSTAL = register(
+            "time_green_crystal", Item::new, new Item.Settings().maxCount(1));
+
     public static final Item CHRONO_WATCH = register(
             "chrono_watch",
             ChronoWatchItem::new,
