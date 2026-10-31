@@ -44,9 +44,6 @@ public final class Haste {
         Vec3d eye = p.getPos().add(0, 1.0, 0);
         Fx.sound(w, p.getPos(), SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.5f, 0.6f);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_BEACON_POWER_SELECT, 1.5f, 1.6f);
-        ModelFx.impact(w, eye, 0.8);
-        Fx.sphere(w, ParticleTypes.ELECTRIC_SPARK, eye, 90, 1.0);
-        Fx.shockwave(w, ParticleTypes.END_ROD, p.getPos().add(0, 0.1, 0), 6, 5, 1, 50);
         return true;
     }
 
@@ -66,11 +63,13 @@ public final class Haste {
             if (TimeManager.now >= s.endAt) {
                 it.remove();
                 Fx.sound(w, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, 1.0f, 1.8f);
-                ModelFx.burst(w, pos.add(0, 1, 0), 12, 0.7, 8);
+                ModelFx.helix(w, pos, 0.8, 1.4, 1, TimeManager.now * 0.5, 3, 6);
                 continue;
             }
 
-            Fx.helix(w, ParticleTypes.ELECTRIC_SPARK, pos, 0.9, 2.0, 2, TimeManager.now * 0.7, 8);
+            if (TimeManager.now % 5 == 0) {
+                ModelFx.helix(w, pos, 0.8, 1.5, 1, TimeManager.now * 0.5, 3, 6);
+            }
 
             double moved = pos.distanceTo(s.last);
             if (moved > 0.25 && moved < 20) {
