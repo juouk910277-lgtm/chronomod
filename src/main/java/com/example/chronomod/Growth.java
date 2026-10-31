@@ -29,7 +29,10 @@ public final class Growth {
         BlockPos center = p.getBlockPos();
         Vec3d cv = p.getPos();
 
+        // 시간 성장의 시전자 보상: 체력 회복과 함께 허기/포만감도 보충한다.
         p.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 120, 1, false, true));
+        p.getHungerManager().setFoodLevel(20);
+        p.getHungerManager().setSaturationLevel(5.0f);
 
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
         w.spawnParticles(ParticleTypes.FLASH, cv.x, cv.y + 1, cv.z, 1, 0, 0, 0, 0);

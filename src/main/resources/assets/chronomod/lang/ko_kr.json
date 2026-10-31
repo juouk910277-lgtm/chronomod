@@ -11,5 +11,6 @@
   "msg.chronomod.cooldown": "%1$s 재사용 대기 중: %2$s초",
   "msg.chronomod.stop_left": "시간 정지 남은 시간: %s초",
   "msg.chronomod.no_history": "되돌릴 시간 기록이 부족합니다",
-  "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다"
+  "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다",
+  "item.chronomod.time_sword": "시간의 검"
 }

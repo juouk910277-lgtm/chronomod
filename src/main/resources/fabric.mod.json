@@ -8,7 +8,8 @@
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.example.chronomod.ChronoMod"]
+    "main": ["com.example.chronomod.ChronoMod"],
+    "client": ["com.example.chronomod.client.ChronoModClient"]
   },
   "depends": {
     "fabricloader": ">=0.16.10",

@@ -15,6 +15,12 @@ import java.util.function.Function;
 public final class ModItems {
     private ModItems() {}
 
+    public static final Item TIME_SWORD = register(
+            "time_sword",
+            TimeSwordItem::new,
+            new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
+                    .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true));
+
     public static final Item CHRONO_WATCH = register(
             "chrono_watch",
             ChronoWatchItem::new,
@@ -29,6 +35,6 @@ public final class ModItems {
     }
 
     public static void init() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(CHRONO_WATCH));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> { entries.add(CHRONO_WATCH); entries.add(TIME_SWORD); });
     }
 }

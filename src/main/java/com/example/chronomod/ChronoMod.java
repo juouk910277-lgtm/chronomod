@@ -2,6 +2,7 @@ package com.example.chronomod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -20,6 +21,7 @@ public class ChronoMod implements ModInitializer {
     @Override
     public void onInitialize() {
         ModItems.init();
+        PayloadTypeRegistry.playS2C().register(AbilityHudPayload.ID, AbilityHudPayload.CODEC);
 
         ServerTickEvents.END_SERVER_TICK.register(TimeManager::tick);
         ServerLifecycleEvents.SERVER_STOPPING.register(TimeManager::shutdown);

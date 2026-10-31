@@ -3,6 +3,8 @@ package com.example.chronomod;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -29,6 +31,23 @@ public final class TimeManager {
         SlowField.tick(server);
         Haste.tick(server);
         Scheduler.tick(now);
+        if (now % 5 == 0) syncHud(server);
+    }
+
+    private static void syncHud(MinecraftServer server) {
+        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            ItemStack main = player.getMainHandStack();
+            ItemStack off = player.getOffHandStack();
+            if (!main.isOf(ModItems.CHRONO_WATCH) && !off.isOf(ModItems.CHRONO_WATCH)) {
+                ServerPlayNetworking.send(player, new AbilityHudPayload("-"));
+                continue;
+            }
+            StringBuilder data = new StringBuilder().append(selected(player).ordinal());
+            for (Ability ability : Ability.values()) {
+                data.append(',').append(remaining(player.getUuid(), ability));
+            }
+            ServerPlayNetworking.send(player, new AbilityHudPayload(data.toString()));
+        }
     }
 
     public static Ability selected(ServerPlayerEntity p) {

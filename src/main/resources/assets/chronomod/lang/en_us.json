@@ -11,5 +11,6 @@
   "msg.chronomod.cooldown": "%1$s on cooldown: %2$ss",
   "msg.chronomod.stop_left": "Time stopped: %ss left",
   "msg.chronomod.no_history": "Not enough time history to rewind",
-  "msg.chronomod.blocked": "Path is blocked"
+  "msg.chronomod.blocked": "Path is blocked",
+  "item.chronomod.time_sword": "Time Sword"
 }
