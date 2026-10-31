@@ -39,9 +39,7 @@ public final class SlowField {
 
         Fx.sound(w, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 1.4f);
         Fx.sound(w, c, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.5f, 0.5f);
-        ModelFx.impact(w, c.add(0, 1, 0), 0.8);
-        Fx.shockwave(w, ParticleTypes.SOUL_FIRE_FLAME, c.add(0, 0.1, 0), RADIUS, 10, 1, 80);
-        Fx.shockwave(w, ParticleTypes.END_ROD, c.add(0, 0.1, 0), RADIUS * 0.6, 6, 2, 50);
+
         return true;
     }
 
@@ -57,8 +55,7 @@ public final class SlowField {
             if (TimeManager.now >= f.endAt()) {
                 it.remove();
                 Fx.sound(w, f.center(), SoundEvents.BLOCK_BEACON_DEACTIVATE, 2.0f, 1.2f);
-                Fx.sphere(w, ParticleTypes.END_ROD, f.center().add(0, 1, 0), 80, 0.7);
-                Fx.shockwave(w, ParticleTypes.ELECTRIC_SPARK, f.center().add(0, 0.1, 0), RADIUS + 3, 6, 1, 80);
+                ModelFx.ring(w, f.center().add(0, 0.15, 0), RADIUS, 4, 8);
                 continue;
             }
             applyField(w, f);
@@ -84,7 +81,7 @@ public final class SlowField {
                 if (refresh) {
                     le.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 3, false, false));
                     le.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 20, 2, false, false));
-                    ModelFx.marker(w, e.getPos().add(0, e.getHeight() / 2, 0), 5);
+                    // The field boundary, not individual entity markers, communicates the slow effect.
                 }
             } else if (e instanceof ProjectileEntity) {
                 e.setVelocity(e.getVelocity().multiply(0.55));
@@ -93,20 +90,7 @@ public final class SlowField {
     }
 
     private static void visuals(ServerWorld w, Field f) {
-        Vec3d c = f.center();
-        for (int i = 0; i < 10; i++) {
-            double u = w.random.nextDouble() * Math.PI * 2;
-            double v = Math.acos(w.random.nextDouble());   // 반구 위의 균일 분포
-            double x = Math.sin(v) * Math.cos(u), y = Math.cos(v), z = Math.sin(v) * Math.sin(u);
-            ModelFx.marker(w, c.add(x * RADIUS, y * RADIUS, z * RADIUS), 5);
-        }
-        if (TimeManager.now % 4 == 0) {
-            Fx.ring(w, ParticleTypes.SOUL_FIRE_FLAME, c.add(0, 0.1, 0), RADIUS, 48, 0);
-        }
-        if (TimeManager.now % 2 == 0) {
-            // 바닥 시계 마법진: 일반보다 훨씬 느리게 돈다
-            Fx.clockEmblem(w, c.add(0, 0.05, 0), RADIUS * 0.6, TimeManager.now / 4.0);
-        }
+        // Four stationary anchors from SummonedFx define the field boundary.
     }
 
     public static void clear() {
