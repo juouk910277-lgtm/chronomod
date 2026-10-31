@@ -41,6 +41,41 @@ public final class AbilityClockFx {
         e.setYaw(yaw);
     }
 
+
+    /** Large segmented hemispherical boundary that follows the time-stop caster. */
+    public static void dome(ServerWorld world, ServerPlayerEntity caster, int duration, double radius) {
+        List<ItemDisplayEntity> parts = new ArrayList<>();
+        List<double[]> offsets = new ArrayList<>();
+        int[] counts = {24, 32, 32, 24, 16};
+        for (int ring = 0; ring < counts.length; ring++) {
+            double theta = (ring + 1) * (Math.PI / 2.0) / (counts.length + 1);
+            double r = radius * Math.sin(theta);
+            double y = radius * Math.cos(theta);
+            for (int i = 0; i < counts[ring]; i++) {
+                double a = Math.PI * 2.0 * i / counts[ring];
+                offsets.add(new double[]{Math.cos(a) * r, y, Math.sin(a) * r});
+                parts.add(part(world, (i + ring) % 2 == 0 ? ModItems.TIME_STOP_GEAR_A : ModItems.TIME_STOP_GEAR_B,
+                        caster.getPos(), (float) Math.toDegrees(-a)));
+            }
+        }
+        final int[] age = {0};
+        Runnable[] frame = new Runnable[1];
+        frame[0] = () -> {
+            if (age[0] >= duration || !caster.isAlive() || caster.getWorld() != world) {
+                discard(parts);
+                return;
+            }
+            Vec3d base = caster.getPos();
+            for (int i = 0; i < parts.size(); i++) {
+                double[] o = offsets.get(i);
+                move(parts.get(i), base.add(o[0], o[1], o[2]), age[0] * ((i % 2 == 0) ? 0.6f : -0.45f));
+            }
+            age[0]++;
+            Scheduler.later(1, frame[0]);
+        };
+        frame[0].run();
+    }
+
     /** Large clock mounted behind the caster. The hands spin up, then stop or run backwards. */
     public static void behind(ServerWorld world, ServerPlayerEntity caster, int duration, boolean reverse, boolean stopAfterWindup) {
         List<ItemDisplayEntity> p = new ArrayList<>();
