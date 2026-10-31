@@ -113,9 +113,9 @@ public final class AbilityClockFx {
     /** Small clock above the caster; used for haste and the teleport trigger. */
     public static void overhead(ServerWorld world, ServerPlayerEntity caster, int duration, boolean fast, boolean snap) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_GEAR_A, caster.getPos(), caster.getYaw()));
+        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_GEAR_A, caster.getPos(), caster.getYaw(), 0.0f));
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
         frame[0] = () -> {
@@ -169,9 +169,9 @@ public final class AbilityClockFx {
     /** Large forward-facing clock for the growth cast. */
     public static void inFront(ServerWorld world, ServerPlayerEntity caster, int duration) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw()));
+        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw(), 0.0f));
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
         frame[0] = () -> {
@@ -218,8 +218,8 @@ public final class AbilityClockFx {
     public static void redImpact(ServerWorld world, Vec3d target, int duration, boolean empowered) {
         List<ItemDisplayEntity> p = new ArrayList<>();
         p.add(part(world, ModItems.TIME_RED_GEAR, target.add(0, 0.25, 0), 0, 0.0f));
-        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, target.add(0, 0.29, 0), 0));
-        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, target.add(0, 0.32, 0), 0));
+        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, target.add(0, 0.29, 0), 0, 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, target.add(0, 0.32, 0), 0, 0.0f));
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
         frame[0] = () -> {
