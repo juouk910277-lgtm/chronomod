@@ -12,5 +12,7 @@
   "msg.chronomod.stop_left": "시간 정지 남은 시간: %s초",
   "msg.chronomod.no_history": "되돌릴 시간 기록이 부족합니다",
   "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다",
-  "item.chronomod.time_sword": "시간의 검"
+  "item.chronomod.time_sword": "시간의 검",
+  "tooltip.chronomod.time_sword.ability": "시간 정지 중 타격 시 추가 피해를 즉시 입히고 대상을 발광시킵니다.",
+  "tooltip.chronomod.time_sword.instant": "추가 피해: 9"
 }
