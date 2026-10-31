@@ -39,7 +39,7 @@ public final class SlowField {
 
         Fx.sound(w, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 1.4f);
         Fx.sound(w, c, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.5f, 0.5f);
-        w.spawnParticles(ParticleTypes.FLASH, c.x, c.y + 1, c.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(w, c.add(0, 1, 0), 0.8);
         Fx.shockwave(w, ParticleTypes.SOUL_FIRE_FLAME, c.add(0, 0.1, 0), RADIUS, 10, 1, 80);
         Fx.shockwave(w, ParticleTypes.END_ROD, c.add(0, 0.1, 0), RADIUS * 0.6, 6, 2, 50);
         return true;
@@ -84,8 +84,7 @@ public final class SlowField {
                 if (refresh) {
                     le.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 3, false, false));
                     le.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 20, 2, false, false));
-                    w.spawnParticles(ParticleTypes.ENCHANT, e.getX(), e.getY() + e.getHeight() / 2, e.getZ(),
-                            6, 0.4, 0.5, 0.4, 0.3);
+                    ModelFx.marker(w, e.getPos().add(0, e.getHeight() / 2, 0), 5);
                 }
             } else if (e instanceof ProjectileEntity) {
                 e.setVelocity(e.getVelocity().multiply(0.55));
@@ -99,8 +98,7 @@ public final class SlowField {
             double u = w.random.nextDouble() * Math.PI * 2;
             double v = Math.acos(w.random.nextDouble());   // 반구 위의 균일 분포
             double x = Math.sin(v) * Math.cos(u), y = Math.cos(v), z = Math.sin(v) * Math.sin(u);
-            w.spawnParticles(ParticleTypes.END_ROD, c.x + x * RADIUS, c.y + y * RADIUS, c.z + z * RADIUS,
-                    1, 0, 0, 0, 0);
+            ModelFx.marker(w, c.add(x * RADIUS, y * RADIUS, z * RADIUS), 5);
         }
         if (TimeManager.now % 4 == 0) {
             Fx.ring(w, ParticleTypes.SOUL_FIRE_FLAME, c.add(0, 0.1, 0), RADIUS, 48, 0);
