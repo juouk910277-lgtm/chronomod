@@ -13,5 +13,5 @@
   "msg.chronomod.no_history": "되돌릴 시간 기록이 부족합니다",
   "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다",
   "item.chronomod.time_sword": "시간의 검",
-  "tooltip.chronomod.time_sword.ability": "기본 피해 6 + 추가 피해 3 (총 9 피해). 시간 정지 중에는 즉시 9 피해를 줍니다."
+  "tooltip.chronomod.time_sword.ability": "기본 피해 3 + 추가 피해 6 (총 9 피해). 시간 정지 중에는 즉시 9 피해를 줍니다."
 }
