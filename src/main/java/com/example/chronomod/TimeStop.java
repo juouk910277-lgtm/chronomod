@@ -137,12 +137,22 @@ public final class TimeStop {
     private static void updateClock(Active active, ServerPlayerEntity caster) {
         float baseYaw = caster.getYaw();
         float t = TimeManager.now;
-        float[] offsets = {0.0f, (float) (Math.sin(t * 0.018) * 5.0),
-                (float) (t * 2.4), (float) (-t * 3.2), (float) (t * 2.1)};
+        float[] offsets = {0.0f, t * 0.18f, t * 3.6f, t * 4.5f, -t * 6.2f};
+        double yaw = Math.toRadians(baseYaw);
+        double cos = Math.cos(yaw);
+        double sin = Math.sin(yaw);
+        double[][] localOffsets = {{0, 0}, {0, 0}, {0, 0}, {-2.15, 1.45}, {2.05, -1.55}};
+
         for (int i = 0; i < active.clockParts.size(); i++) {
             ItemDisplayEntity part = active.clockParts.get(i);
             if (part.isRemoved()) continue;
-            part.setPosition(caster.getX(), caster.getY() + 2.7, caster.getZ());
+
+            double lx = localOffsets[Math.min(i, 4)][0];
+            double lz = localOffsets[Math.min(i, 4)][1];
+            double worldX = lx * cos + lz * sin;
+            double worldZ = -lx * sin + lz * cos;
+
+            part.setPosition(caster.getX() + worldX, caster.getY() + 2.7, caster.getZ() + worldZ);
             part.setPitch(90.0f);
             part.setYaw(baseYaw + offsets[Math.min(i, offsets.length - 1)]);
         }
