@@ -44,7 +44,7 @@ public final class Haste {
         Vec3d eye = p.getPos().add(0, 1.0, 0);
         Fx.sound(w, p.getPos(), SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.5f, 0.6f);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_BEACON_POWER_SELECT, 1.5f, 1.6f);
-        w.spawnParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(w, eye, 0.8);
         Fx.sphere(w, ParticleTypes.ELECTRIC_SPARK, eye, 90, 1.0);
         Fx.shockwave(w, ParticleTypes.END_ROD, p.getPos().add(0, 0.1, 0), 6, 5, 1, 50);
         return true;
@@ -66,7 +66,7 @@ public final class Haste {
             if (TimeManager.now >= s.endAt) {
                 it.remove();
                 Fx.sound(w, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, 1.0f, 1.8f);
-                Fx.sphere(w, ParticleTypes.END_ROD, pos.add(0, 1, 0), 40, 0.4);
+                ModelFx.burst(w, pos.add(0, 1, 0), 12, 0.7, 8);
                 continue;
             }
 
@@ -74,9 +74,7 @@ public final class Haste {
 
             double moved = pos.distanceTo(s.last);
             if (moved > 0.25 && moved < 20) {
-                w.spawnParticles(ParticleTypes.END_ROD, s.last.x, s.last.y + 1.0, s.last.z, 6, 0.25, 0.6, 0.25, 0.01);
-                w.spawnParticles(ParticleTypes.CLOUD, s.last.x, s.last.y + 0.1, s.last.z, 2, 0.2, 0.05, 0.2, 0.02);
-                if (TimeManager.now % 2 == 0) Fx.ghost(w, s.last);   // 잔상
+                if (TimeManager.now % 2 == 0) Fx.ghost(w, s.last);   // 3D 잔상
             }
             s.last = pos;
         }
