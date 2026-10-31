@@ -34,6 +34,7 @@ public final class Growth {
         p.getHungerManager().setFoodLevel(20);
         p.getHungerManager().setSaturationLevel(5.0f);
 
+        SummonedFx.growth(w, cv);
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
         w.spawnParticles(ParticleTypes.FLASH, cv.x, cv.y + 1, cv.z, 1, 0, 0, 0, 0);
         Fx.helix(w, ParticleTypes.HAPPY_VILLAGER, cv, 1.2, 3.0, 4, 0, 14);
