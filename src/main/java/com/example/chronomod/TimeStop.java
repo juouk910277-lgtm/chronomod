@@ -177,7 +177,7 @@ public final class TimeStop {
 
         int n = 0;
         for (Entity e : targets) {
-            if (n++ >= 40) break;
+            if (n++ >= 6) break;
             ModelFx.impact(world, e.getPos().add(0, e.getHeight() / 2, 0), 0.45);
         }
     }
