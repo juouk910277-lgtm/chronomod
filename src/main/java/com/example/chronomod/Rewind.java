@@ -108,9 +108,7 @@ public final class Rewind {
         Vec3d eye = p.getPos().add(0, 1.0, 0);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 2.0f, 0.6f);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_BELL_RESONATE, 2.0f, 1.8f);
-        ModelFx.impact(w, eye, 0.9);
-        Fx.sphere(w, ParticleTypes.REVERSE_PORTAL, eye, 100, 0.5);
-        Fx.shockwave(w, ParticleTypes.REVERSE_PORTAL, p.getPos().add(0, 0.1, 0), 8, 6, 1, 50);
+        ModelFx.line(w, eye.add(-1.2, 0, 0), eye.add(1.2, 0, 0), 1.0, 8);
         return true;
     }
 
@@ -142,7 +140,9 @@ public final class Rewind {
             p.fallDistance = 0;
 
             // 거꾸로 도는 나선 + 점점 낮아지는 차임 소리 (되감기 느낌)
-            Fx.helix(w, ParticleTypes.REVERSE_PORTAL, s.pos(), 0.9, 2.0, 3, -TimeManager.now * 0.8, 8);
+            if (TimeManager.now % 4 == 0) {
+                ModelFx.helix(w, s.pos(), 0.65, 1.5, 1, -TimeManager.now * 0.45, 3, 5);
+            }
             if (TimeManager.now % 2 == 0) {
                 float frac = target / (float) Math.max(1, job.path.size() - 1);
                 Fx.sound(w, s.pos(), SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 2.0f - 1.5f * frac);
@@ -183,9 +183,7 @@ public final class Rewind {
         }
 
         Vec3d eye = p.getPos().add(0, 1.0, 0);
-        ModelFx.impact(w, eye, 1.0);
-        Fx.sphere(w, ParticleTypes.END_ROD, eye, 80, 0.6);
-        Fx.shockwave(w, ParticleTypes.END_ROD, p.getPos().add(0, 0.1, 0), 10, 6, 1, 60);
+        ModelFx.burst(w, eye, 3, 0.55, 7);
         Fx.sound(w, p.getPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 0.8f);
         Fx.sound(w, p.getPos(), SoundEvents.BLOCK_BEACON_POWER_SELECT, 1.5f, 1.2f);
     }
