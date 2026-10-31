@@ -22,6 +22,7 @@ public class ChronoMod implements ModInitializer {
     public void onInitialize() {
         ModItems.init();
         PayloadTypeRegistry.playS2C().register(AbilityHudPayload.ID, AbilityHudPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(ScreenFxPayload.ID, ScreenFxPayload.CODEC);
 
         ServerTickEvents.END_SERVER_TICK.register(TimeManager::tick);
         ServerLifecycleEvents.SERVER_STOPPING.register(TimeManager::shutdown);
