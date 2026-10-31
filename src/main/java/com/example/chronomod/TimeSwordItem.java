@@ -22,7 +22,7 @@ public class TimeSwordItem extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        tooltip.add(Text.literal("공격 피해를 주지 않는 도구형 아이템입니다.")
+        tooltip.add(Text.translatable("tooltip.chronomod.time_sword.ability")
                 .formatted(Formatting.GRAY));
     }
 }
