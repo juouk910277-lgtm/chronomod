@@ -21,7 +21,11 @@ public final class ModItems {
             new Item.Settings().maxCount(1).rarity(Rarity.EPIC)
                     .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true));
 
-    // Internal 3D model item used only by the time-stop visual; intentionally not added to a creative tab.\n    public static final Item TIME_STOP_CLOCK = register(\n            "time_stop_clock", Item::new, new Item.Settings().maxCount(1));\n\n    public static final Item CHRONO_WATCH = register(
+    // Internal model item used only by the time-stop visual.
+    public static final Item TIME_STOP_CLOCK = register(
+            "time_stop_clock", Item::new, new Item.Settings().maxCount(1));
+
+    public static final Item CHRONO_WATCH = register(
             "chrono_watch",
             ChronoWatchItem::new,
             new Item.Settings()
@@ -35,6 +39,9 @@ public final class ModItems {
     }
 
     public static void init() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> { entries.add(CHRONO_WATCH); entries.add(TIME_SWORD); });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(CHRONO_WATCH);
+            entries.add(TIME_SWORD);
+        });
     }
 }
