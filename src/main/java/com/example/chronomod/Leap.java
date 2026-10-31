@@ -46,13 +46,11 @@ public final class Leap {
         double len = from.distanceTo(to);
 
         // 출발점: 포탈 폭발 + 잔상
-        ModelFx.burst(w, from, 14, 0.9, 8);
-        Fx.ghost(w, start);
+        ModelFx.marker(w, from, 6);
         Fx.sound(w, start, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 1.4f);
 
         // 경로: 번개 같은 선 + 순차적으로 켜지는 잔상
-        Fx.line(w, ParticleTypes.ELECTRIC_SPARK, from, to, 0.35);
-        Fx.line(w, ParticleTypes.END_ROD, from, to, 0.8);
+        ModelFx.line(w, from, to, 1.0, 6);
         for (double t = 3; t < len; t += 3) {
             final Vec3d ghostPos = start.add(dir.multiply(t));
             Scheduler.later((int) (t / len * 5), () -> Fx.ghost(w, ghostPos));
@@ -63,9 +61,7 @@ public final class Leap {
         p.fallDistance = 0;
 
         // 도착점: 섬광 + 충격파
-        ModelFx.impact(w, to, 1.0);
-        Fx.sphere(w, ParticleTypes.END_ROD, to, 60, 0.6);
-        Fx.shockwave(w, ParticleTypes.ELECTRIC_SPARK, end.add(0, 0.1, 0), 4, 4, 1, 40);
+        ModelFx.ring(w, end.add(0, 0.1, 0), 1.1, 3, 7);
         Fx.sound(w, end, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 0.9f);
         Fx.sound(w, end, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST, 1.5f, 1.2f);
 
