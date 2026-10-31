@@ -48,9 +48,7 @@ public final class ModItems {
     }
 
     public static void init() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
-            entries.add(CHRONO_WATCH);
-            entries.add(TIME_SWORD);
-        });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(CHRONO_WATCH));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> entries.add(TIME_SWORD));
     }
 }
