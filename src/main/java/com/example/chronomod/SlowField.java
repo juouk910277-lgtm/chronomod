@@ -35,6 +35,7 @@ public final class SlowField {
         ServerWorld w = (ServerWorld) p.getWorld();
         Vec3d c = p.getPos();
         FIELDS.add(new Field(p.getUuid(), w.getRegistryKey(), c, TimeManager.now + DURATION));
+        SummonedFx.slowField(w, c, RADIUS);
 
         Fx.sound(w, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 1.4f);
         Fx.sound(w, c, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.5f, 0.5f);
