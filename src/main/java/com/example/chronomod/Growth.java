@@ -36,7 +36,6 @@ public final class Growth {
 
         SummonedFx.growth(w, cv);
         AbilityClockFx.inFront(w, p, 48);
-        AbilityClockFx.greenAura(w, p, 120);
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
 
         for (int wave = 0; wave < WAVES; wave++) {
@@ -78,7 +77,11 @@ public final class Growth {
                         grew = true;
                     }
 
-                    // The expanding ground pulses show growth without per-block clutter.
+                    if (grew) {
+                        w.spawnParticles(ParticleTypes.HAPPY_VILLAGER,
+                                pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5,
+                                4, 0.22, 0.28, 0.22, 0.015);
+                    }
                 }
             }
         }
