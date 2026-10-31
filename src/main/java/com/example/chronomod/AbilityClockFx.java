@@ -55,7 +55,7 @@ public final class AbilityClockFx {
                 double a = Math.PI * 2.0 * i / counts[ring];
                 offsets.add(new double[]{Math.cos(a) * r, y, Math.sin(a) * r});
                 parts.add(part(world, (i + ring) % 2 == 0 ? ModItems.TIME_STOP_GEAR_A : ModItems.TIME_STOP_GEAR_B,
-                        caster.getPos(), (float) Math.toDegrees(-a)));
+                        caster.getPos(), (float) Math.toDegrees(-a), 0.0f));
             }
         }
         final int[] age = {0};
