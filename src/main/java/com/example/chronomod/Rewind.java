@@ -68,7 +68,7 @@ public final class Rewind {
             ServerWorld w = (ServerWorld) p.getWorld();
             List<MobSnap> mobs = new ArrayList<>();
             for (Entity e : w.getOtherEntities(p, p.getBoundingBox().expand(16),
-                    x -> x instanceof LivingEntity && !(x instanceof PlayerEntity) && x.isAlive())) {
+                    x -> x instanceof LivingEntity && x.isAlive())) {
                 LivingEntity le = (LivingEntity) e;
                 mobs.add(new MobSnap(le.getUuid(), le.getPos(), le.getYaw(), le.getHealth()));
             }
@@ -158,6 +158,16 @@ public final class Rewind {
 
     private static void visit(ServerWorld w, Snap s, int index) {
         if (index % 2 == 0) Fx.ghost(w, s.pos());
+        // Nearby players and mobs are rewound along with the caster, using the
+        // same historical snapshots recorded for this caster.
+        for (MobSnap ms : s.mobs()) {
+            Entity e = w.getEntity(ms.id());
+            if (e instanceof LivingEntity le && le.isAlive()) {
+                le.refreshPositionAndAngles(ms.pos().x, ms.pos().y, ms.pos().z, ms.yaw(), le.getPitch());
+                le.setVelocity(Vec3d.ZERO);
+                le.fallDistance = 0;
+            }
+        }
     }
 
     private static void finish(ServerWorld w, ServerPlayerEntity p, Job job) {
@@ -169,7 +179,7 @@ public final class Rewind {
         p.extinguish();
         p.fallDistance = 0;
 
-        // 주변 몹도 과거 위치/체력으로 되돌린다
+        // 주변 플레이어와 몹도 과거 위치/체력으로 되돌린다
         for (MobSnap ms : last.mobs()) {
             Entity e = w.getEntity(ms.id());
             if (e instanceof LivingEntity le && le.isAlive()) {
