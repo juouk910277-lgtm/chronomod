@@ -12,16 +12,16 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-/** 시간의 검: 기본 피해 6 + 추가 피해 3으로 총 9의 피해를 준다. */
+/** 시간의 검: 기본 피해 3 + 추가 피해 6으로 총 9의 피해를 준다. */
 public class TimeSwordItem extends SwordItem {
-    private static final float BONUS_DAMAGE_PER_PULSE = 1.0f;
+    private static final float BONUS_DAMAGE_PER_PULSE = 2.0f;
     private static final int[] BONUS_DAMAGE_DELAYS = {20, 40, 60};
     private static final ThreadLocal<Boolean> APPLYING_BONUS =
             ThreadLocal.withInitial(() -> false);
 
     public TimeSwordItem(Settings settings) {
-        // 플레이어 기본 공격력 1 + 다이아 검 공격력 3 + 보정 2 = 기본 피해 6
-        super(ToolMaterial.DIAMOND, 2.0f, -2.4f, settings);
+        // 플레이어 기본 공격력 1 + 다이아 검 공격력 3 - 보정 1 = 기본 피해 3
+        super(ToolMaterial.DIAMOND, -1.0f, -2.4f, settings);
     }
 
     /** 시간 정지 피해 가로채기에서 추가 피해를 통과시키기 위한 표시. */
@@ -51,13 +51,13 @@ public class TimeSwordItem extends SwordItem {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()) {
             if (TimeStop.isTargetFrozen(target)) {
-                // 시간 정지 중에는 기본 피해 6에 추가 피해 3을 더해 즉시 총 9 피해.
+                // 시간 정지 중에는 기본 피해 3에 추가 피해 6을 더해 즉시 총 9 피해.
                 applyBonus(target, attacker, world,
                         BONUS_DAMAGE_PER_PULSE * BONUS_DAMAGE_DELAYS.length);
                 AbilityClockFx.redImpact(world,
                         target.getPos().add(0, target.getHeight(), 0), 12, true);
             } else {
-                // 평상시에는 기본 피해 6 + 1초 간격 추가 피해 1씩 세 번 = 총 9 피해.
+                // 평상시에는 기본 피해 3 + 1초 간격 추가 피해 2씩 세 번 = 총 9 피해.
                 for (int delay : BONUS_DAMAGE_DELAYS) {
                     Scheduler.later(delay, () -> {
                         applyBonus(target, attacker, world, BONUS_DAMAGE_PER_PULSE);
