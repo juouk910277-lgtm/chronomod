@@ -16,13 +16,13 @@ import java.util.List;
 public final class AbilityClockFx {
     private AbilityClockFx() {}
 
-    private static ItemDisplayEntity part(ServerWorld world, Item item, Vec3d pos, float yaw) {
+    private static ItemDisplayEntity part(ServerWorld world, Item item, Vec3d pos, float yaw, float pitch) {
         ItemDisplayEntity e = EntityType.ITEM_DISPLAY.create(world, SpawnReason.TRIGGERED);
         if (e == null) return null;
         e.getStackReference(0).set(new ItemStack(item));
         e.setPosition(pos.x, pos.y, pos.z);
         e.setYaw(yaw);
-        e.setPitch(90.0f);
+        e.setPitch(pitch);
         e.setNoGravity(true);
         e.setSilent(true);
         e.setInvulnerable(true);
@@ -79,11 +79,11 @@ public final class AbilityClockFx {
     /** Large clock mounted behind the caster. The hands spin up, then stop or run backwards. */
     public static void behind(ServerWorld world, ServerPlayerEntity caster, int duration, boolean reverse, boolean stopAfterWindup) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_GEAR_A, caster.getPos(), caster.getYaw()));
-        p.add(part(world, ModItems.TIME_STOP_GEAR_B, caster.getPos(), caster.getYaw()));
+        p.add(part(world, ModItems.TIME_STOP_CLOCK, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_GEAR_A, caster.getPos(), caster.getYaw(), 0.0f));
+        p.add(part(world, ModItems.TIME_STOP_GEAR_B, caster.getPos(), caster.getYaw(), 0.0f));
         final Vec3d[] last = {caster.getPos()};
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
@@ -137,15 +137,15 @@ public final class AbilityClockFx {
     /** Large dial projected on the ground; its hand settles at twelve before disappearing. */
     public static void ground(ServerWorld world, Vec3d center, double radius, int duration) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_STOP_CLOCK, center.add(0, 0.08, 0), 0));
-        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, center.add(0, 0.12, 0), 0));
-        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, center.add(0, 0.15, 0), 0));
+        p.add(part(world, ModItems.TIME_STOP_CLOCK, center.add(0, 0.08, 0), 0, 90.0f));
+        p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, center.add(0, 0.12, 0), 0, 90.0f));
+        p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, center.add(0, 0.15, 0), 0, 90.0f));
         int count = 32;
         for (int i = 0; i < count; i++) {
             double a = Math.PI * 2.0 * i / count;
             Vec3d pos = center.add(Math.cos(a) * radius, 0.10, Math.sin(a) * radius);
             p.add(part(world, i % 2 == 0 ? ModItems.TIME_STOP_GEAR_A : ModItems.TIME_STOP_GEAR_B,
-                    pos, (float) Math.toDegrees(-a)));
+                    pos, (float) Math.toDegrees(-a), 90.0f));
         }
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
@@ -194,7 +194,7 @@ public final class AbilityClockFx {
     /** Green rotating crystal aura around the caster while the growth benefit is active. */
     public static void greenAura(ServerWorld world, ServerPlayerEntity caster, int duration) {
         List<ItemDisplayEntity> parts = new ArrayList<>();
-        for (int i = 0; i < 3; i++) parts.add(part(world, ModItems.TIME_GREEN_CRYSTAL, caster.getPos(), 0));
+        for (int i = 0; i < 3; i++) parts.add(part(world, ModItems.TIME_GREEN_CRYSTAL, caster.getPos(), 0, 0.0f));
         final int[] age = {0};
         Runnable[] frame = new Runnable[1];
         frame[0] = () -> {
@@ -217,7 +217,7 @@ public final class AbilityClockFx {
     /** A brief red-themed impact cue using the darker gear silhouette above a damaged target. */
     public static void redImpact(ServerWorld world, Vec3d target, int duration, boolean empowered) {
         List<ItemDisplayEntity> p = new ArrayList<>();
-        p.add(part(world, ModItems.TIME_RED_GEAR, target.add(0, 0.25, 0), 0));
+        p.add(part(world, ModItems.TIME_RED_GEAR, target.add(0, 0.25, 0), 0, 0.0f));
         p.add(part(world, ModItems.TIME_STOP_HOUR_HAND, target.add(0, 0.29, 0), 0));
         p.add(part(world, ModItems.TIME_STOP_MINUTE_HAND, target.add(0, 0.32, 0), 0));
         final int[] age = {0};
