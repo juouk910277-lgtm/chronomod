@@ -25,6 +25,15 @@ public final class ModItems {
     public static final Item TIME_STOP_CLOCK = register(
             "time_stop_clock", Item::new, new Item.Settings().maxCount(1));
 
+    public static final Item TIME_STOP_HOUR_HAND = register(
+            "time_stop_hour_hand", Item::new, new Item.Settings().maxCount(1));
+    public static final Item TIME_STOP_MINUTE_HAND = register(
+            "time_stop_minute_hand", Item::new, new Item.Settings().maxCount(1));
+    public static final Item TIME_STOP_GEAR_A = register(
+            "time_stop_gear_a", Item::new, new Item.Settings().maxCount(1));
+    public static final Item TIME_STOP_GEAR_B = register(
+            "time_stop_gear_b", Item::new, new Item.Settings().maxCount(1));
+
     public static final Item CHRONO_WATCH = register(
             "chrono_watch",
             ChronoWatchItem::new,
