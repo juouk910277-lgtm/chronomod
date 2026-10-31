@@ -101,6 +101,7 @@ public final class Rewind {
         dq.clear();
         JOBS.add(new Job(p.getUuid(), path));
         SummonedFx.rewind(w, p.getPos());
+        AbilityClockFx.behind(w, p, ANIM_TICKS, true, false);
 
         p.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, ANIM_TICKS + 20, 4, false, false));
         p.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 50, 0, false, false));
