@@ -1,83 +1,28 @@
 package com.example.chronomod;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-/** 시간의 검: 기본 타격 피해 없이 추가 피해만 적용한다. */
+/**
+ * 시간의 검: 전투 탭에 유지되는 도구형 아이템.
+ * 기본 공격력 보정으로 공격 피해를 0으로 만들며, 추가 피해 효과는 없다.
+ */
 public class TimeSwordItem extends SwordItem {
-    private static final float BONUS_DAMAGE_PER_PULSE = 3.0f;
-    private static final int[] BONUS_DAMAGE_DELAYS = {20, 40, 60};
-    private static final ThreadLocal<Boolean> APPLYING_BONUS =
-            ThreadLocal.withInitial(() -> false);
-
     public TimeSwordItem(Settings settings) {
         // 플레이어 기본 공격력 1 + 다이아 검 공격력 3 - 4 = 0
         super(ToolMaterial.DIAMOND, -4.0f, -2.4f, settings);
     }
 
-    /** TimeStop의 피해 가로채기에서 검의 추가 피해만 통과시키기 위한 표시. */
-    public static boolean isApplyingBonusDamage() {
-        return APPLYING_BONUS.get();
-    }
-
-    private static void applyBonus(LivingEntity target, LivingEntity attacker,
-                                   ServerWorld world, float amount) {
-        if (!target.isAlive() || target.getWorld() != world) return;
-
-        // 직전 펄스의 피해 무적 시간이 다음 펄스를 막지 않도록 초기화한다.
-        target.timeUntilRegen = 0;
-        APPLYING_BONUS.set(true);
-        try {
-            if (attacker instanceof PlayerEntity player) {
-                target.damage(world, world.getDamageSources().playerAttack(player), amount);
-            } else {
-                target.damage(world, world.getDamageSources().mobAttack(attacker), amount);
-            }
-        } finally {
-            APPLYING_BONUS.set(false);
-        }
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()) {
-            if (TimeStop.isTargetFrozen(target)) {
-                // 시간 정지 중에는 3회분을 합산해 즉시 9 피해.
-                applyBonus(target, attacker, world,
-                        BONUS_DAMAGE_PER_PULSE * BONUS_DAMAGE_DELAYS.length);
-                AbilityClockFx.redImpact(world,
-                        target.getPos().add(0, target.getHeight(), 0), 12, true);
-            } else {
-                // 평상시에는 20틱 간격으로 3 피해씩 세 번, 총 9 피해.
-                for (int delay : BONUS_DAMAGE_DELAYS) {
-                    Scheduler.later(delay, () -> {
-                        applyBonus(target, attacker, world, BONUS_DAMAGE_PER_PULSE);
-                        if (target.isAlive()) {
-                            AbilityClockFx.redImpact(world,
-                                    target.getPos().add(0, target.getHeight(), 0), 8, false);
-                        }
-                    });
-                }
-            }
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        tooltip.add(Text.translatable("tooltip.chronomod.time_sword.ability")
-                .formatted(Formatting.LIGHT_PURPLE));
-        tooltip.add(Text.translatable("tooltip.chronomod.time_sword.instant")
+        tooltip.add(Text.literal("공격 피해를 주지 않는 도구형 아이템입니다.")
                 .formatted(Formatting.GRAY));
     }
 }
