@@ -2,8 +2,6 @@ package com.example.chronomod;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
@@ -14,9 +12,10 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-/** 시간 정지 중에도 즉시 피해를 누적시키는 시간의 검. */
+/** 시간 정지 중에도 기본 타격 피해는 즉시 적용되며, 추가 피해는 3초에 걸쳐 적용되는 시간의 검. */
 public class TimeSwordItem extends SwordItem {
-    private static final float BONUS_DAMAGE = 9.0f;
+    private static final float BONUS_DAMAGE_PER_PULSE = 3.0f;
+    private static final int[] BONUS_DAMAGE_DELAYS = {0, 20, 40};
 
     public TimeSwordItem(Settings settings) {
         // 다이아몬드 검과 동일한 기본 공격 수치: 피해량 7, 공격 속도 1.6.
@@ -26,15 +25,19 @@ public class TimeSwordItem extends SwordItem {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()) {
-            // 기존 3초 분할 피해(3 + 3 + 3)를 한 번의 즉발 추가 피해로 변경.
-            // 시간 정지 중에도 TimeStop.onDamage가 시간의 검 타격을 통과시킨다.
-            if (attacker instanceof PlayerEntity player) {
-                target.damage(world, world.getDamageSources().playerAttack(player), BONUS_DAMAGE);
-            } else {
-                target.damage(world, world.getDamageSources().mobAttack(attacker), BONUS_DAMAGE);
+            // 추가 피해 총 9를 1초 간격으로 3회 적용한다.
+            // 시간 정지 중 시간의 검 타격은 TimeStop.onDamage에서 통과하므로 기본 타격은 즉시 들어간다.
+            for (int delay : BONUS_DAMAGE_DELAYS) {
+                Scheduler.later(delay, () -> {
+                    if (!target.isAlive() || target.getWorld() != world) return;
+                    if (attacker instanceof PlayerEntity player) {
+                        target.damage(world, world.getDamageSources().playerAttack(player), BONUS_DAMAGE_PER_PULSE);
+                    } else {
+                        target.damage(world, world.getDamageSources().mobAttack(attacker), BONUS_DAMAGE_PER_PULSE);
+                    }
+                    ModelFx.impact(world, target.getPos().add(0, target.getHeight() * 0.55, 0), 0.55);
+                });
             }
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 40, 0, false, true, true));
-            ModelFx.impact(world, target.getPos().add(0, target.getHeight() * 0.55, 0), 0.85);
         }
         return super.postHit(stack, target, attacker);
     }
