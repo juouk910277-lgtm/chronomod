@@ -96,6 +96,7 @@ public final class TimeStop {
         ACTIVE.add(active);
 
         playStartEffects(world, caster, targets);
+        SummonedFx.timeStop(world, c);
         return true;
     }
 
