@@ -1,0 +1,460 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "face": "minecraft:block/obsidian",
+    "steel": "minecraft:block/iron_block",
+    "glass": "minecraft:block/blue_stained_glass",
+    "gold": "minecraft:block/gold_block",
+    "glow": "minecraft:block/sea_lantern"
+  },
+  "elements": [
+    {
+      "name": "gear hub",
+      "from": [
+        7.55,
+        7.55,
+        8.8
+      ],
+      "to": [
+        8.45,
+        8.45,
+        9.4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#steel"
+        },
+        "south": {
+          "texture": "#steel"
+        },
+        "east": {
+          "texture": "#steel"
+        },
+        "west": {
+          "texture": "#steel"
+        },
+        "up": {
+          "texture": "#steel"
+        },
+        "down": {
+          "texture": "#steel"
+        }
+      }
+    },
+    {
+      "name": "tooth_0",
+      "from": [
+        9.27,
+        7.62,
+        8.65
+      ],
+      "to": [
+        10.030000000000001,
+        8.38,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_1",
+      "from": [
+        9.048941916244322,
+        8.444999999999999,
+        8.65
+      ],
+      "to": [
+        9.808941916244324,
+        9.205,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_2",
+      "from": [
+        8.444999999999999,
+        9.048941916244322,
+        8.65
+      ],
+      "to": [
+        9.205,
+        9.808941916244324,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_3",
+      "from": [
+        7.62,
+        9.27,
+        8.65
+      ],
+      "to": [
+        8.38,
+        10.030000000000001,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_4",
+      "from": [
+        6.795000000000001,
+        9.048941916244322,
+        8.65
+      ],
+      "to": [
+        7.555000000000001,
+        9.808941916244324,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_5",
+      "from": [
+        6.191058083755676,
+        8.444999999999999,
+        8.65
+      ],
+      "to": [
+        6.951058083755676,
+        9.205,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_6",
+      "from": [
+        5.97,
+        7.62,
+        8.65
+      ],
+      "to": [
+        6.7299999999999995,
+        8.38,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_7",
+      "from": [
+        6.191058083755676,
+        6.795000000000001,
+        8.65
+      ],
+      "to": [
+        6.951058083755676,
+        7.555000000000001,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_8",
+      "from": [
+        6.794999999999999,
+        6.191058083755677,
+        8.65
+      ],
+      "to": [
+        7.554999999999999,
+        6.951058083755677,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_9",
+      "from": [
+        7.62,
+        5.97,
+        8.65
+      ],
+      "to": [
+        8.38,
+        6.7299999999999995,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_10",
+      "from": [
+        8.444999999999999,
+        6.191058083755677,
+        8.65
+      ],
+      "to": [
+        9.205,
+        6.951058083755677,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "tooth_11",
+      "from": [
+        9.048941916244322,
+        6.794999999999999,
+        8.65
+      ],
+      "to": [
+        9.808941916244324,
+        7.554999999999999,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    }
+  ],
+  "display": {
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        6.5,
+        6.5,
+        6.5
+      ]
+    }
+  }
+}
