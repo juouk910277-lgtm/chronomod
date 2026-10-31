@@ -6,7 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -20,7 +20,7 @@ public class TimeSwordItem extends SwordItem {
 
     public TimeSwordItem(Settings settings) {
         // 다이아몬드 검과 동일한 기본 공격 수치: 피해량 7, 공격 속도 1.6.
-        super(ToolMaterials.DIAMOND, 3.0f, -2.4f, settings);
+        super(ToolMaterial.DIAMOND, 3.0f, -2.4f, settings);
     }
 
     @Override
