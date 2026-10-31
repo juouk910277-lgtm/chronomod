@@ -129,7 +129,7 @@ public final class TimeStop {
         display.setNoGravity(true);
         display.setSilent(true);
         display.setInvulnerable(true);
-        display.setCommandTag("chronomod_time_stop_clock");
+        display.addCommandTag("chronomod_time_stop_clock");
         world.spawnEntity(display);
         parts.add(display);
     }
