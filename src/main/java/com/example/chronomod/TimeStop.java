@@ -284,6 +284,14 @@ public final class TimeStop {
         ModelFx.shockwave(world, center.add(0, 0.1, 0), 4.0, 1, 8);
     }
 
+    /** Returns true while this entity is currently inside an active time-stop freeze. */
+    public static boolean isTargetFrozen(Entity entity) {
+        for (Active active : ACTIVE) {
+            if (active.frozen.containsKey(entity.getUuid())) return true;
+        }
+        return false;
+    }
+
     /** 정지 중 피해 가로채기: 쌓아 두고 취소 */
     public static boolean onDamage(LivingEntity entity, DamageSource source, float amount) {
         if (ACTIVE.isEmpty()) return true;
