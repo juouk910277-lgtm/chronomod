@@ -19,7 +19,7 @@ public class TimeSwordItem extends SwordItem {
 
     public TimeSwordItem(Settings settings) {
         // 다이아몬드 검과 동일한 기본 공격 수치: 피해량 7, 공격 속도 1.6.
-        super(ToolMaterial.DIAMOND, 3.0f, -2.4f, settings);
+        super(ToolMaterial.DIAMOND, 5.0f, -2.4f, settings);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TimeSwordItem extends SwordItem {
                     } else {
                         target.damage(world, world.getDamageSources().mobAttack(attacker), BONUS_DAMAGE_PER_PULSE);
                     }
-                    ModelFx.impact(world, target.getPos().add(0, target.getHeight() * 0.55, 0), 0.55);
+                    AbilityClockFx.redImpact(world, target.getPos().add(0, target.getHeight(), 0), 8, false);
                 });
             }
         }
