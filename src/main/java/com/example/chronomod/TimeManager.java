@@ -92,6 +92,7 @@ public final class TimeManager {
         };
 
         if (ok) {
+            ServerPlayNetworking.send(p, new ScreenFxPayload(a.ordinal()));
             if (!creative) setCooldown(p.getUuid(), a);
             p.sendMessage(Text.translatable("msg.chronomod.cast", a.displayName()), true);
         }
