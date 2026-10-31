@@ -36,9 +36,6 @@ public final class Growth {
 
         SummonedFx.growth(w, cv);
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
-        ModelFx.impact(w, cv.add(0, 1, 0), 0.8);
-        Fx.helix(w, ParticleTypes.HAPPY_VILLAGER, cv, 1.2, 3.0, 4, 0, 14);
-        Fx.sphere(w, ParticleTypes.TOTEM_OF_UNDYING, cv.add(0, 1, 0), 50, 0.5);
 
         for (int wave = 0; wave < WAVES; wave++) {
             final int wv = wave;
@@ -79,16 +76,13 @@ public final class Growth {
                         grew = true;
                     }
 
-                    if (grew && w.random.nextInt(4) == 0) {
-                        ModelFx.marker(w, Vec3d.ofCenter(pos), 6);
-                    }
+                    // The expanding ground pulses show growth without per-block clutter.
                 }
             }
         }
 
         double radius = r * (wave + 1) / (double) WAVES;
-        Fx.ring(w, ParticleTypes.HAPPY_VILLAGER, cv.add(0, 0.2, 0), radius, 48, 0.05);
-        Fx.ring(w, ParticleTypes.TOTEM_OF_UNDYING, cv.add(0, 0.4, 0), radius, 16, 0.15);
+        ModelFx.ring(w, cv.add(0, 0.15, 0), radius, 4, 8);
         Fx.sound(w, cv, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 1.2f, 0.8f + wave * 0.2f);
     }
 }
