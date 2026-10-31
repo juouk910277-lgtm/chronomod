@@ -24,9 +24,10 @@ public class TimeSwordItem extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()) {
-            // 추가 피해 총 9를 1초 간격으로 3회 적용한다.
-            // 시간 정지 중 시간의 검 타격은 TimeStop.onDamage에서 통과하므로 기본 타격은 즉시 들어간다.
+        if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()
+                && !TimeStop.isTargetFrozen(target)) {
+            // 정지 중에는 기본 검 타격만 즉시 적용하고, 3초 추가 피해는 예약하지 않는다.
+            // 정지가 아닐 때만 추가 피해 총 9를 1초 간격으로 3회 적용한다.
             for (int delay : BONUS_DAMAGE_DELAYS) {
                 Scheduler.later(delay, () -> {
                     if (!target.isAlive() || target.getWorld() != world) return;
