@@ -42,6 +42,7 @@ public final class Leap {
         final Vec3d end = best;
         final Vec3d from = start.add(0, 1.0, 0);
         final Vec3d to = end.add(0, 1.0, 0);
+        SummonedFx.leap(w, end);
         double len = from.distanceTo(to);
 
         // 출발점: 포탈 폭발 + 잔상
