@@ -46,7 +46,7 @@ public final class Leap {
         double len = from.distanceTo(to);
 
         // 출발점: 포탈 폭발 + 잔상
-        Fx.sphere(w, ParticleTypes.REVERSE_PORTAL, from, 50, 0.35);
+        ModelFx.burst(w, from, 14, 0.9, 8);
         Fx.ghost(w, start);
         Fx.sound(w, start, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 1.4f);
 
@@ -63,8 +63,7 @@ public final class Leap {
         p.fallDistance = 0;
 
         // 도착점: 섬광 + 충격파
-        w.spawnParticles(ParticleTypes.FLASH, to.x, to.y, to.z, 1, 0, 0, 0, 0);
-        w.spawnParticles(ParticleTypes.SONIC_BOOM, to.x, to.y, to.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(w, to, 1.0);
         Fx.sphere(w, ParticleTypes.END_ROD, to, 60, 0.6);
         Fx.shockwave(w, ParticleTypes.ELECTRIC_SPARK, end.add(0, 0.1, 0), 4, 4, 1, 40);
         Fx.sound(w, end, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.5f, 0.9f);
@@ -77,8 +76,7 @@ public final class Leap {
             Vec3d mid = e.getPos().add(0, e.getHeight() / 2, 0);
             if (distToSegment(mid, from, to) <= 1.8 && e instanceof LivingEntity le) {
                 le.damage(w, w.getDamageSources().playerAttack(p), DAMAGE);
-                w.spawnParticles(ParticleTypes.CRIT, mid.x, mid.y, mid.z, 25, 0.4, 0.5, 0.4, 0.5);
-                w.spawnParticles(ParticleTypes.ELECTRIC_SPARK, mid.x, mid.y, mid.z, 20, 0.4, 0.5, 0.4, 0.4);
+                ModelFx.impact(w, mid, 0.85);
             }
         }
         return true;
