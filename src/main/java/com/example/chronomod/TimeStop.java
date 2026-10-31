@@ -168,14 +168,11 @@ public final class TimeStop {
         Fx.sound(world, c, SoundEvents.BLOCK_BEACON_ACTIVATE, 2.0f, 0.5f);
 
         ModelFx.impact(world, eye, 1.0);
-        Fx.sphere(world, ParticleTypes.END_ROD, eye, 160, 0.9);
-        Fx.sphere(world, ParticleTypes.ELECTRIC_SPARK, eye, 100, 1.4);
-        Fx.shockwave(world, ParticleTypes.END_ROD, ground, 24, 12, 1, 90);
-        Fx.shockwave(world, ParticleTypes.SOUL_FIRE_FLAME, ground, 14, 8, 2, 60);
+        ModelFx.shockwave(world, ground, 5.0, 1, 8);
 
         Scheduler.later(6, () -> {
             ModelFx.impact(world, eye, 0.8);
-            Fx.sphere(world, ParticleTypes.REVERSE_PORTAL, eye, 120, 0.7);
+            ModelFx.burst(world, eye, 3, 0.65, 7);
         });
 
         int n = 0;
@@ -233,19 +230,16 @@ public final class TimeStop {
 
     private static void visuals(ServerWorld world, Active a, ServerPlayerEntity caster, long left) {
         Vec3d c = caster.getPos();
-        if (TimeManager.now % 2 == 0) {
-            Fx.clockEmblem(world, c.add(0, 0.05, 0), 3.5, TimeManager.now);
-            SummonedFx.clockFace(world, c, caster.getYaw(), 3.6, TimeManager.now);
-        }
+        // The floating five-part clock is the only persistent time-stop emblem.
         // The floating clock and surrounding displays provide the active-time visual.
 
-        if (TimeManager.now % 3 == 0) {
+        if (TimeManager.now % 20 == 0) {
             int n = 0;
             for (UUID id : a.frozen.keySet()) {
                 Entity e = world.getEntity(id);
                 if (e == null) continue;
                 ModelFx.marker(world, e.getPos().add(0, e.getHeight() / 2, 0), 4);
-                if (++n >= 40) break;
+                if (++n >= 4) break;
             }
         }
 
@@ -284,8 +278,8 @@ public final class TimeStop {
         Fx.sound(world, center, SoundEvents.BLOCK_BEACON_DEACTIVATE, 2.0f, 0.6f);
         Fx.sound(world, center, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, 1.5f, 1.2f);
         ModelFx.impact(world, eye, 1.0);
-        Fx.sphere(world, ParticleTypes.REVERSE_PORTAL, eye, 140, 0.8);
-        Fx.shockwave(world, ParticleTypes.ELECTRIC_SPARK, center.add(0, 0.1, 0), 22, 10, 1, 80);
+        ModelFx.burst(world, eye, 3, 0.8, 8);
+        ModelFx.shockwave(world, center.add(0, 0.1, 0), 4.0, 1, 8);
     }
 
     /** 정지 중 피해 가로채기: 쌓아 두고 취소 */
