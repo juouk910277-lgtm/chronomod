@@ -177,7 +177,8 @@ public final class TimeStop {
     private static void visuals(ServerWorld world, Active a, ServerPlayerEntity caster, long left) {
         Vec3d c = caster.getPos();
         if (TimeManager.now % 2 == 0) {
-            Fx.clockEmblem(world, c.add(0, 0.05, 0), 3.5, TimeManager.now);\n            SummonedFx.clockFace(world, c, caster.getYaw(), 3.6, TimeManager.now);
+            Fx.clockEmblem(world, c.add(0, 0.05, 0), 3.5, TimeManager.now);
+            SummonedFx.clockFace(world, c, caster.getYaw(), 3.6, TimeManager.now);
         }
         world.spawnParticles(ParticleTypes.END_ROD, c.x, c.y + 1.0, c.z, 3, 1.5, 1.0, 1.5, 0.02);
 
