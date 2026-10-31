@@ -36,7 +36,7 @@ public final class Growth {
 
         SummonedFx.growth(w, cv);
         Fx.sound(w, cv, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.5f, 1.8f);
-        w.spawnParticles(ParticleTypes.FLASH, cv.x, cv.y + 1, cv.z, 1, 0, 0, 0, 0);
+        ModelFx.impact(w, cv.add(0, 1, 0), 0.8);
         Fx.helix(w, ParticleTypes.HAPPY_VILLAGER, cv, 1.2, 3.0, 4, 0, 14);
         Fx.sphere(w, ParticleTypes.TOTEM_OF_UNDYING, cv.add(0, 1, 0), 50, 0.5);
 
@@ -80,8 +80,7 @@ public final class Growth {
                     }
 
                     if (grew && w.random.nextInt(4) == 0) {
-                        w.spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5,
-                                3, 0.3, 0.3, 0.3, 0.0);
+                        ModelFx.marker(w, Vec3d.ofCenter(pos), 6);
                     }
                 }
             }
