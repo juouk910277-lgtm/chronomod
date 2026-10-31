@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chronomod:item/time_stop_minute_hand"
+  }
+}
