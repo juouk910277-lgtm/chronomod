@@ -17,22 +17,11 @@ public final class ChronoModClient implements ClientModInitializer {
     private static ItemStack iconFor(int i) {
         return switch (i) {
             case 0 -> new ItemStack(Items.CLOCK);
-            case 1 -> new ItemStack(Items.ECHO_SHARD);
-            case 2 -> new ItemStack(Items.AMETHYST_SHARD);
-            case 3 -> new ItemStack(Items.SUGAR);
+            case 1 -> new ItemStack(Items.AMETHYST_SHARD);
+            case 2 -> new ItemStack(Items.CRYING_OBSIDIAN);
+            case 3 -> new ItemStack(Items.FEATHER);
             case 4 -> new ItemStack(Items.ENDER_PEARL);
-            default -> new ItemStack(Items.WHEAT);
-        };
-    }
-
-    private static String nameFor(int i) {
-        return switch (i) {
-            case 0 -> "TIME STOP";
-            case 1 -> "REWIND";
-            case 2 -> "SLOW FIELD";
-            case 3 -> "TIME HASTE";
-            case 4 -> "TIME LEAP";
-            default -> "GROWTH";
+            default -> new ItemStack(Items.GLOW_BERRIES);
         };
     }
 
@@ -53,60 +42,51 @@ public final class ChronoModClient implements ClientModInitializer {
             try { selected = Integer.parseInt(values[0]); }
             catch (NumberFormatException ex) { return; }
 
-            int x = client.getWindow().getScaledWidth() - 174;
-            int y = 42;
-            int width = 166;
-            int rowH = 30;
-            int height = 34 + rowH * Ability.values().length + 8;
+            // Compact 3-column x 2-row skill selector, matching the reference image.
+            int x = 8, y = 8, cellW = 38, cellH = 37, gap = 3;
+            int panelW = cellW * 3 + gap * 2 + 8;
+            int panelH = cellH * 2 + gap + 8;
+            draw.fill(x - 3, y - 3, x + panelW + 3, y + panelH + 3, 0xA8000715);
+            draw.fill(x - 2, y - 2, x + panelW + 2, y + panelH + 2, 0xD9101428);
+            draw.fill(x - 2, y - 2, x + panelW + 2, y, 0xFF8D69D5);
 
-            draw.fill(x - 5, y - 5, x + width + 5, y + height + 5, 0x99030819);
-            draw.fill(x - 3, y - 3, x + width + 3, y + height + 3, 0xEE101A38);
-            draw.fill(x - 3, y - 3, x + width + 3, y, 0xFFB18AFF);
-            draw.fill(x - 3, y, x, y + height + 3, 0xFF5B8DFF);
-            draw.fill(x + width, y, x + width + 3, y + height + 3, 0xFF5B8DFF);
-
-            draw.drawItem(new ItemStack(Items.CLOCK), x + 7, y + 7);
-            draw.drawTextWithShadow(client.textRenderer, Text.literal("CHRONO ARTS"),
-                    x + 29, y + 7, 0xFFF1E9FF);
-            draw.drawTextWithShadow(client.textRenderer, Text.literal("TEMPORAL SKILL MATRIX"),
-                    x + 29, y + 19, 0xFF8FA8DB);
-
-            int rowY = y + 34;
             for (int i = 0; i < Ability.values().length; i++) {
+                int col = i % 3, row = i / 3;
+                int cx = x + col * (cellW + gap);
+                int cy = y + row * (cellH + gap);
                 long remaining;
                 try { remaining = Math.max(0, Long.parseLong(values[i + 1])); }
                 catch (NumberFormatException ex) { remaining = 0; }
                 boolean active = i == selected;
                 boolean ready = remaining == 0;
-                int bottom = rowY + rowH - 2;
 
-                draw.fill(x + 5, rowY, x + width - 5, bottom,
-                        active ? 0xDD39336B : 0x99505B7B);
-                if (active) {
-                    draw.fill(x + 5, rowY, x + 8, bottom, 0xFFD4A8FF);
-                    draw.fill(x + 8, rowY, x + width - 5, rowY + 1, 0xFF8D78E8);
-                }
+                draw.fill(cx, cy, cx + cellW, cy + cellH,
+                        active ? 0xEE49366F : 0xCC20263D);
+                draw.fill(cx, cy, cx + cellW, cy + 1, active ? 0xFFFFD58A : 0xFF59617E);
+                draw.fill(cx, cy + cellH - 1, cx + cellW, cy + cellH,
+                        active ? 0xFFFFD58A : 0xFF59617E);
+                draw.fill(cx, cy, cx + 1, cy + cellH,
+                        active ? 0xFFFFD58A : 0xFF59617E);
+                draw.fill(cx + cellW - 1, cy, cx + cellW, cy + cellH,
+                        active ? 0xFFFFD58A : 0xFF59617E);
 
-                draw.drawItem(iconFor(i), x + 10, rowY + 5);
-                draw.drawTextWithShadow(client.textRenderer, Text.literal(nameFor(i)),
-                        x + 32, rowY + 5, active ? 0xFFFFFFFF : 0xFFD3DDF5);
+                draw.drawTextWithShadow(client.textRenderer, Text.literal(Integer.toString(i + 1)),
+                        cx + 2, cy + 1, active ? 0xFFFFE9A8 : 0xFFE1DDF5);
+                draw.drawItem(iconFor(i), cx + 11, cy + 5);
 
-                String status = ready ? "READY" : String.format(java.util.Locale.ROOT, "%.1fs", remaining / 20.0);
-                int statusColor = ready ? 0xFF83E8D0 : 0xFFFFC77D;
-                draw.drawTextWithShadow(client.textRenderer, Text.literal(status),
-                        x + width - 42, rowY + 5, statusColor);
-
-                int barX = x + 32;
-                int barY = rowY + 19;
-                int barW = width - 44;
-                draw.fill(barX, barY, barX + barW, barY + 3, 0xAA080D20);
+                int barX = cx + 4, barY = cy + 27, barW = cellW - 8;
+                draw.fill(barX, barY, barX + barW, barY + 4, 0xFF090D1B);
                 int total = Ability.values()[i].cooldownTicks;
-                float progress = total <= 0 ? 1.0f : Math.max(0.0f, Math.min(1.0f, 1.0f - remaining / (float) total));
+                float progress = total <= 0 ? 1.0f
+                        : Math.max(0.0f, Math.min(1.0f, 1.0f - remaining / (float) total));
                 int fillW = Math.round(barW * progress);
-                if (fillW > 0) draw.fill(barX, barY, barX + fillW, barY + 3,
-                        ready ? 0xFF6FE6D0 : 0xFF9C83FF);
-
-                rowY += rowH;
+                if (fillW > 0) draw.fill(barX, barY, barX + fillW, barY + 4,
+                        ready ? 0xFF6FE6D0 : 0xFFB18AFF);
+                if (!ready) {
+                    String seconds = String.format(java.util.Locale.ROOT, "%.0f", remaining / 20.0);
+                    draw.drawTextWithShadow(client.textRenderer, Text.literal(seconds),
+                            cx + cellW - client.textRenderer.getWidth(seconds) - 3, cy + 1, 0xFFFFC77D);
+                }
             }
         });
     }
