@@ -305,7 +305,7 @@ public final class TimeStop {
                 if (source.getAttacker() instanceof ServerPlayerEntity player
                         && (player.getMainHandStack().isOf(ModItems.TIME_SWORD)
                         || player.getOffHandStack().isOf(ModItems.TIME_SWORD))) {
-                    return false;
+                    return true;
                 }
                 f.pending += amount;
                 f.source = source;
