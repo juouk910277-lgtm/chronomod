@@ -25,11 +25,11 @@ import net.minecraft.world.World;
 import java.util.*;
 
 /**
- * 시간 정지: 반경 안의 모든 엔티티(몹, 플레이어, 투사체, 아이템 ...)를 5초 동안 멈춘다.
+ * 시간 정지: 반경 안의 모든 엔티티(몹, 플레이어, 투사체, 아이템 ...)를 10초 동안 멈춘다.
  * 정지 중 받은 피해는 쌓아 두었다가 정지가 풀리는 순간 한꺼번에 터진다.
  */
 public final class TimeStop {
-    public static final int DURATION = 100;      // 5초
+    public static final int DURATION = 200;      // 10초
     public static final double RADIUS = 40.0;
 
     private static final List<Active> ACTIVE = new ArrayList<>();
