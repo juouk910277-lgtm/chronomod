@@ -13,6 +13,6 @@
   "msg.chronomod.no_history": "되돌릴 시간 기록이 부족합니다",
   "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다",
   "item.chronomod.time_sword": "시간의 검",
-  "tooltip.chronomod.time_sword.ability": "타격 시 추가 피해 9를 즉시 입히고 대상을 2초간 발광시킵니다.",
-  "tooltip.chronomod.time_sword.instant": "시간 정지 중에도 피해가 지연되지 않습니다."
+  "tooltip.chronomod.time_sword.ability": "타격 시 추가 피해 총 9를 3초에 걸쳐 입힙니다. (1초마다 3)",
+  "tooltip.chronomod.time_sword.instant": "시간 정지 중에도 기본 타격 피해는 즉시 적용됩니다."
 }
