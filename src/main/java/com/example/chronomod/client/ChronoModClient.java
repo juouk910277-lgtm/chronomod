@@ -3,6 +3,7 @@ package com.example.chronomod.client;
 import com.example.chronomod.Ability;
 import com.example.chronomod.AbilityHudPayload;
 import com.example.chronomod.ModItems;
+import com.example.chronomod.ScreenFxPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -11,6 +12,13 @@ import net.minecraft.text.Text;
 
 public final class ChronoModClient implements ClientModInitializer {
     private static volatile String hudData = "-";
+    private static volatile int screenFxAbility = -1;
+    private static volatile long screenFxStartedAt = 0L;
+
+    private static final int[] SCREEN_COLORS = {
+            0xFFFFD36E, 0xFFB69CFF, 0xFF73D9F2,
+            0xFFFFA66E, 0xFF83E5B5, 0xFF9DDB86
+    };
 
     // 7x7 pixel-art glyphs: each ability has its own silhouette and accent color.
     private static final String[][] GLYPHS = {
