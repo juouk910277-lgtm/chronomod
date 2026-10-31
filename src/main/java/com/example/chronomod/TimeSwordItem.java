@@ -27,7 +27,11 @@ public class TimeSwordItem extends SwordItem {
         if (attacker.getWorld() instanceof ServerWorld world && target.isAlive()) {
             // 기존 3초 분할 피해(3 + 3 + 3)를 한 번의 즉발 추가 피해로 변경.
             // 시간 정지 중에도 TimeStop.onDamage가 시간의 검 타격을 통과시킨다.
-            target.damage(world, world.getDamageSources().playerAttack((PlayerEntity) attacker), BONUS_DAMAGE);
+            if (attacker instanceof PlayerEntity player) {
+                target.damage(world, world.getDamageSources().playerAttack(player), BONUS_DAMAGE);
+            } else {
+                target.damage(world, world.getDamageSources().mobAttack(attacker), BONUS_DAMAGE);
+            }
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 40, 0, false, true, true));
             ModelFx.impact(world, target.getPos().add(0, target.getHeight() * 0.55, 0), 0.85);
         }
