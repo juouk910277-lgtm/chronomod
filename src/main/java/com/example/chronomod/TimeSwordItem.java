@@ -15,7 +15,7 @@ import java.util.List;
 /** 시간의 검: 기본 타격 피해 없이 추가 피해만 적용한다. */
 public class TimeSwordItem extends SwordItem {
     private static final float BONUS_DAMAGE_PER_PULSE = 3.0f;
-    private static final int[] BONUS_DAMAGE_DELAYS = {0, 20, 40};
+    private static final int[] BONUS_DAMAGE_DELAYS = {20, 40, 60};
     private static final ThreadLocal<Boolean> APPLYING_BONUS =
             ThreadLocal.withInitial(() -> false);
 
