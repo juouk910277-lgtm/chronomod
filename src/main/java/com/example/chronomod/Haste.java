@@ -35,7 +35,7 @@ public final class Haste {
     public static boolean start(ServerPlayerEntity p) {
         ServerWorld w = (ServerWorld) p.getWorld();
         ACTIVE.put(p.getUuid(), new State(TimeManager.now + DURATION, p.getPos()));
-        SummonedFx.haste(w, p.getPos());
+        AbilityClockFx.overhead(w, p, DURATION, true, false);
 
         p.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, DURATION, 4, false, true));
         p.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, DURATION, 3, false, true));
