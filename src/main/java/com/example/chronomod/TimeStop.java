@@ -300,6 +300,13 @@ public final class TimeStop {
         for (Active a : ACTIVE) {
             Frozen f = a.frozen.get(entity.getUuid());
             if (f != null) {
+                // 시간의 검은 시간 정지 중에도 기본 타격과 추가 피해를 정상적으로 통과시킨다.
+                if (TimeSwordItem.isApplyingBonusDamage()) return true;
+                if (source.getAttacker() instanceof ServerPlayerEntity player
+                        && (player.getMainHandStack().isOf(ModItems.TIME_SWORD)
+                        || player.getOffHandStack().isOf(ModItems.TIME_SWORD))) {
+                    return true;
+                }
                 f.pending += amount;
                 f.source = source;
                 if (entity.getWorld() instanceof ServerWorld sw) {
