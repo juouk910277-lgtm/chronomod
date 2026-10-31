@@ -44,6 +44,64 @@ public final class SummonedFx {
         }
     }
 
+    /** Large upright summoned clock face with hour marks, gears, and moving hands. */
+    public static void clockFace(ServerWorld w, Vec3d center, float yaw, double radius, long tick) {
+        double angle = Math.toRadians(yaw);
+        double rx = Math.cos(angle), rz = Math.sin(angle);
+        Vec3d face = center.add(0, 2.6, 0);
+
+        // Outer and inner rims in a vertical plane.
+        for (int i = 0; i < 48; i++) {
+            double a = Math.PI * 2.0 * i / 48.0;
+            double x = Math.cos(a) * radius;
+            double y = Math.sin(a) * radius;
+            block(w, face.add(rx * x, y, rz * x), Blocks.POLISHED_BLACKSTONE_BRICKS.getDefaultState(), 8);
+            if (i % 2 == 0) {
+                block(w, face.add(rx * x * 0.88, y * 0.88, rz * x * 0.88),
+                        Blocks.CUT_COPPER.getDefaultState(), 8);
+            }
+        }
+
+        // Twelve prominent hour indices.
+        for (int i = 0; i < 12; i++) {
+            double a = Math.PI * 2.0 * i / 12.0;
+            double x = Math.sin(a) * radius * 0.76;
+            double y = Math.cos(a) * radius * 0.76;
+            block(w, face.add(rx * x, y, rz * x), Blocks.GILDED_BLACKSTONE.getDefaultState(), 8);
+        }
+
+        // Two gear-like cogs on the dial.
+        for (int g = 0; g < 2; g++) {
+            double gx = (g == 0 ? -0.42 : 0.42) * radius;
+            double gy = (g == 0 ? -0.12 : 0.18) * radius;
+            double gr = radius * 0.19;
+            for (int i = 0; i < 12; i++) {
+                double a = Math.PI * 2.0 * i / 12.0;
+                block(w, face.add(rx * (gx + Math.cos(a) * gr),
+                        gy + Math.sin(a) * gr, rz * (gx + Math.cos(a) * gr)),
+                        Blocks.CUT_COPPER.getDefaultState(), 8);
+            }
+            block(w, face.add(rx * gx, gy, rz * gx), Blocks.GOLD_BLOCK.getDefaultState(), 8);
+        }
+
+        // Sweeping minute and hour hands.
+        double handAngle = (tick % 240L) * Math.PI * 2.0 / 240.0;
+        for (int i = 1; i <= 10; i++) {
+            double d = radius * 0.065 * i;
+            block(w, face.add(rx * Math.sin(handAngle) * d,
+                    Math.cos(handAngle) * d, rz * Math.sin(handAngle) * d),
+                    Blocks.GOLD_BLOCK.getDefaultState(), 4);
+        }
+        double hourAngle = handAngle * 0.12 + Math.PI;
+        for (int i = 1; i <= 6; i++) {
+            double d = radius * 0.075 * i;
+            block(w, face.add(rx * Math.sin(hourAngle) * d,
+                    Math.cos(hourAngle) * d, rz * Math.sin(hourAngle) * d),
+                    Blocks.AMETHYST_BLOCK.getDefaultState(), 4);
+        }
+        block(w, face, Blocks.GOLD_BLOCK.getDefaultState(), 8);
+    }
+
     /** Twin clock rings and four floating hour markers. */
     public static void timeStop(ServerWorld w, Vec3d center) {
         ring(w, center, 3.8, 24, 0.15, Blocks.AMETHYST_BLOCK.getDefaultState(), 110, 0);
