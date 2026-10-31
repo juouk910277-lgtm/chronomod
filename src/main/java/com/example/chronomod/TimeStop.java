@@ -155,8 +155,9 @@ public final class TimeStop {
             double worldZ = -lx * sin + lz * cos;
 
             part.setPosition(caster.getX() + worldX, caster.getY() + 2.7, caster.getZ() + worldZ);
-            part.setPitch(90.0f);
-            part.setYaw(baseYaw + offsets[Math.min(i, offsets.length - 1)]);
+            part.setPitch(0.0f);
+            part.setYaw(baseYaw);
+            if (i > 0) AbilityClockFx.rotateFace(part, offsets[Math.min(i, offsets.length - 1)]);
         }
     }
 
