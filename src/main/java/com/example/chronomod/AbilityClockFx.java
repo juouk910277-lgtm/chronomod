@@ -8,6 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.AffineTransformation;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import com.example.chronomod.mixin.DisplayEntityAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,19 @@ public final class AbilityClockFx {
         if (e == null || e.isRemoved()) return;
         e.setPosition(p.x, p.y, p.z);
         e.setYaw(yaw);
+    }
+
+    /** Rotate an item-display model around the face normal without turning the whole clock. */
+    public static void rotateFace(ItemDisplayEntity entity, float degrees) {
+        if (entity == null || entity.isRemoved()) return;
+        Quaternionf roll = new Quaternionf().rotationZ((float) Math.toRadians(degrees));
+        AffineTransformation transform = new AffineTransformation(
+                new Vector3f(0, 0, 0),
+                new Quaternionf(),
+                new Vector3f(1, 1, 1),
+                roll
+        );
+        ((DisplayEntityAccessor) entity).chronomod$setTransformation(transform);
     }
 
 
@@ -100,8 +117,10 @@ public final class AbilityClockFx {
             else if (stopAfterWindup && age[0] >= 10) spin = 150.0f;
             else spin = age[0] * 36.0f;
             move(p.get(0), center, facing);
-            move(p.get(1), center.add(0, 0.035, 0), facing + spin * 0.20f);
-            move(p.get(2), center.add(0, 0.055, 0), facing + spin);
+            move(p.get(1), center.add(0, 0.035, 0), facing);
+            rotateFace(p.get(1), spin * 0.20f);
+            move(p.get(2), center.add(0, 0.055, 0), facing);
+            rotateFace(p.get(2), spin);
             move(p.get(3), center.add(-0.88, -0.62, 0.015), facing - age[0] * 8.0f);
             move(p.get(4), center.add(0.88, -0.62, 0.015), facing + age[0] * 11.0f);
             age[0]++;
@@ -126,7 +145,8 @@ public final class AbilityClockFx {
             Vec3d center = caster.getPos().add(0, 2.45, 0);
             float angle = snap && age[0] < 3 ? 0 : (fast ? age[0] * 34.0f : age[0] * 12.0f);
             move(p.get(0), center, caster.getYaw());
-            move(p.get(1), center.add(0, 0.035, 0), caster.getYaw() + angle);
+            move(p.get(1), center.add(0, 0.035, 0), caster.getYaw());
+            rotateFace(p.get(1), angle);
             move(p.get(2), center.add(0.34, 0.02, 0), caster.getYaw() - age[0] * 18.0f);
             age[0]++;
             Scheduler.later(1, frame[0]);
@@ -158,8 +178,10 @@ public final class AbilityClockFx {
             float progress = Math.min(1.0f, age[0] / (float) Math.max(1, duration - 8));
             float angle = (1.0f - progress) * 720.0f;
             move(p.get(0), center.add(0, 0.08, 0), 0);
-            move(p.get(1), center.add(0, 0.12, 0), angle * 0.5f);
-            move(p.get(2), center.add(0, 0.15, 0), angle);
+            move(p.get(1), center.add(0, 0.12, 0), 0);
+            rotateFace(p.get(1), angle * 0.5f);
+            move(p.get(2), center.add(0, 0.15, 0), 0);
+            rotateFace(p.get(2), angle);
             age[0]++;
             Scheduler.later(1, frame[0]);
         };
@@ -182,8 +204,10 @@ public final class AbilityClockFx {
             Vec3d center = caster.getEyePos().add(caster.getRotationVec(1.0f).multiply(1.65));
             float yaw = caster.getYaw();
             move(p.get(0), center, yaw);
-            move(p.get(1), center.add(0, 0.035, 0), yaw + age[0] * 13.0f);
-            move(p.get(2), center.add(0, 0.055, 0), yaw + age[0] * 28.0f);
+            move(p.get(1), center.add(0, 0.035, 0), yaw);
+            rotateFace(p.get(1), age[0] * 13.0f);
+            move(p.get(2), center.add(0, 0.055, 0), yaw);
+            rotateFace(p.get(2), age[0] * 28.0f);
             age[0]++;
             Scheduler.later(1, frame[0]);
         };
@@ -230,8 +254,10 @@ public final class AbilityClockFx {
             float spin = (empowered ? 48.0f : 24.0f) * age[0];
             Vec3d at = target.add(0, 0.25 + age[0] * 0.012, 0);
             move(p.get(0), at, spin * 0.4f);
-            move(p.get(1), at.add(0, 0.035, 0), spin * 0.65f);
-            move(p.get(2), at.add(0, 0.055, 0), spin);
+            move(p.get(1), at.add(0, 0.035, 0), 0);
+            rotateFace(p.get(1), spin * 0.65f);
+            move(p.get(2), at.add(0, 0.055, 0), 0);
+            rotateFace(p.get(2), spin);
             age[0]++;
             Scheduler.later(1, frame[0]);
         };
