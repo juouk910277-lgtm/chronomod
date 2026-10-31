@@ -1,0 +1,15 @@
+{
+  "item.chronomod.chrono_watch": "Chrono Watch",
+  "ability.chronomod.time_stop": "Time Stop",
+  "ability.chronomod.rewind": "Time Rewind",
+  "ability.chronomod.slow_field": "Time Slow Field",
+  "ability.chronomod.haste": "Time Haste",
+  "ability.chronomod.leap": "Temporal Leap",
+  "ability.chronomod.growth": "Time Growth",
+  "msg.chronomod.selected": "Ability: %s",
+  "msg.chronomod.cast": "%s activated!",
+  "msg.chronomod.cooldown": "%1$s on cooldown: %2$ss",
+  "msg.chronomod.stop_left": "Time stopped: %ss left",
+  "msg.chronomod.no_history": "Not enough time history to rewind",
+  "msg.chronomod.blocked": "Path is blocked"
+}

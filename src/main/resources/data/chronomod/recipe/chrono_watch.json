@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GEG",
+    "ECE",
+    "GNG"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "E": "minecraft:ender_eye",
+    "C": "minecraft:clock",
+    "N": "minecraft:nether_star"
+  },
+  "result": {
+    "id": "chronomod:chrono_watch",
+    "count": 1
+  }
+}

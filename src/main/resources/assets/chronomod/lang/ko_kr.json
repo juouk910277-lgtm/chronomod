@@ -1,0 +1,15 @@
+{
+  "item.chronomod.chrono_watch": "시간의 회중시계",
+  "ability.chronomod.time_stop": "시간 정지",
+  "ability.chronomod.rewind": "시간 되돌리기",
+  "ability.chronomod.slow_field": "시간 감속장",
+  "ability.chronomod.haste": "시간 가속",
+  "ability.chronomod.leap": "시간 도약",
+  "ability.chronomod.growth": "시간 성장",
+  "msg.chronomod.selected": "능력 선택: %s",
+  "msg.chronomod.cast": "%s 발동!",
+  "msg.chronomod.cooldown": "%1$s 재사용 대기 중: %2$s초",
+  "msg.chronomod.stop_left": "시간 정지 남은 시간: %s초",
+  "msg.chronomod.no_history": "되돌릴 시간 기록이 부족합니다",
+  "msg.chronomod.blocked": "앞이 막혀 있어 도약할 수 없습니다"
+}

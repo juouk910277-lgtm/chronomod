@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chronomod:item/chrono_watch"
+  }
+}
